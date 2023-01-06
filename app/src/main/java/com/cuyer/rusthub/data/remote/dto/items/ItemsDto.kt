@@ -1,5 +1,6 @@
 package com.cuyer.rusthub.data.remote.dto.items
 
+import com.cuyer.rusthub.data.local.entity.ItemsEntity
 import com.cuyer.rusthub.domain.model.Items
 
 data class ItemsDto(
@@ -10,8 +11,8 @@ data class ItemsDto(
     val _id: String
 )
 
-fun ItemsDto.toItems(): Items {
-    return Items(
+fun ItemsDto.toItemsEntity(): ItemsEntity {
+    return ItemsEntity(
         Craftable = Craftable,
         Image = Image,
         Ingredients = Ingredients,

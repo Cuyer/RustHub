@@ -1,13 +1,20 @@
 package com.cuyer.rusthub.di
 
+import android.app.Application
+import androidx.room.Room
 import com.cuyer.rusthub.common.Constants
+import com.cuyer.rusthub.data.local.Converters
+import com.cuyer.rusthub.data.local.RustHubDatabase
 import com.cuyer.rusthub.data.remote.ItemsApi
 import com.cuyer.rusthub.data.remote.ServersApi
 import com.cuyer.rusthub.data.remote.repository.ItemsRepositoryImpl
 import com.cuyer.rusthub.data.remote.repository.ServersRepositoryImpl
+import com.cuyer.rusthub.data.util.GsonParser
 import com.cuyer.rusthub.domain.repository.items.ItemsRepository
 import com.cuyer.rusthub.domain.repository.servers.ServersRepository
 import com.cuyer.rusthub.domain.use_case.get_items.GetItemsUseCase
+import com.cuyer.rusthub.domain.use_case.get_servers.GetServersUseCase
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -54,8 +61,24 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGetItemsUseCase(repository: ItemsRepository): GetItemsUseCase {
-        return GetItemsUseCase(repository)
+    fun provideRustHubDatabase(app: Application): RustHubDatabase{
+        return Room.databaseBuilder(
+            app,
+            RustHubDatabase::class.java,
+            "rust_hub_db"
+        ).addTypeConverter(Converters(GsonParser(Gson()))).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetItemsUseCase(repository: ItemsRepository, db: RustHubDatabase): GetItemsUseCase {
+        return GetItemsUseCase(repository, db.itemsDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetServersUseCase(repository: ServersRepository, db: RustHubDatabase): GetServersUseCase {
+        return GetServersUseCase(repository, db.serversDao)
     }
 
 }

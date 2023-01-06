@@ -1,5 +1,6 @@
 package com.cuyer.rusthub.data.remote.dto.servers
 
+import com.cuyer.rusthub.data.local.entity.ServersEntity
 import com.cuyer.rusthub.domain.model.Servers
 
 data class ServersDto(
@@ -19,8 +20,8 @@ data class ServersDto(
     val wipe_schedule: String?
 )
 
-fun ServersDto.toServers(): Servers{
-    return Servers(
+fun ServersDto.toServersEntity(): ServersEntity{
+    return ServersEntity(
         __v = __v,
         _id = _id,
         cycle = cycle,
