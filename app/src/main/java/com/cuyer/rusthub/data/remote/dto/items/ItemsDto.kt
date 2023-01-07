@@ -7,6 +7,7 @@ data class ItemsDto(
     val Craftable: String,
     val Image: String,
     val Ingredients: List<Ingredient>,
+    val ScrappedComponents: List<ScrappedComponents>,
     val Type: String,
     val _id: String
 )
@@ -16,6 +17,7 @@ fun ItemsDto.toItemsEntity(): ItemsEntity {
         Craftable = Craftable,
         Image = Image,
         Ingredients = Ingredients,
+        ScrappedComponents = ScrappedComponents,
         Type = Type,
         _id = _id
     )
