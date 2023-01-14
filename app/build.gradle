@@ -37,6 +37,7 @@ android {
             option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
         }
     }
+    namespace 'com.cuyer.rusthub'
 }
 
 dependencies {

@@ -13,4 +13,7 @@ data class Servers( val __v: Int,
                     val rating: String,
                     val server_flag: String,
                     val wipe: String,
-                    val wipe_schedule: String?)
+                    val wipe_schedule: String?,
+                    val serverIp: String,
+                    val updateTime: String
+)

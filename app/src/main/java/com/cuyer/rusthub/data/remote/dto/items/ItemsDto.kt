@@ -4,21 +4,21 @@ import com.cuyer.rusthub.data.local.entity.ItemsEntity
 import com.cuyer.rusthub.domain.model.Items
 
 data class ItemsDto(
-    val Craftable: String,
-    val Image: String,
-    val Ingredients: List<Ingredient>,
-    val ScrappedComponents: List<ScrappedComponents>,
-    val Type: String,
+    val craftable: String,
+    val image: String,
+    val ingredients: List<Ingredient>,
+    val scrappedComponents: List<ScrappedComponents>,
+    val type: String,
     val _id: String
 )
 
 fun ItemsDto.toItemsEntity(): ItemsEntity {
     return ItemsEntity(
-        Craftable = Craftable,
-        Image = Image,
-        Ingredients = Ingredients,
-        ScrappedComponents = ScrappedComponents,
-        Type = Type,
+        craftable = craftable,
+        image = image,
+        ingredients = ingredients,
+        scrappedComponents = scrappedComponents,
+        type = type,
         _id = _id
     )
 }

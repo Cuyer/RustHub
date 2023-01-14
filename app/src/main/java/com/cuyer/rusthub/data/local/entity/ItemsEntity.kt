@@ -8,21 +8,21 @@ import com.cuyer.rusthub.domain.model.Items
 
 @Entity
 data class ItemsEntity(
-    val Craftable: String,
-    val Image: String,
-    val Ingredients: List<Ingredient>,
-    val ScrappedComponents: List<ScrappedComponents>,
-    val Type: String,
+    val craftable: String?,
+    val image: String,
+    val ingredients: List<Ingredient>,
+    val scrappedComponents: List<ScrappedComponents>,
+    val type: String,
     val _id: String,
     @PrimaryKey val id: Int? = null
 ) {
     fun toItems(): Items {
         return Items(
-            Craftable = Craftable,
-            Image = Image,
-            Ingredients = Ingredients,
-            ScrappedComponents = ScrappedComponents,
-            Type = Type,
+            craftable = craftable,
+            image = image,
+            ingredients = ingredients,
+            scrappedComponents = scrappedComponents,
+            type = type,
             _id = _id
         )
     }

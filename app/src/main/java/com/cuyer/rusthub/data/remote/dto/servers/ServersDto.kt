@@ -17,7 +17,9 @@ data class ServersDto(
     val rating: String,
     val server_flag: String,
     val wipe: String,
-    val wipe_schedule: String?
+    val wipe_schedule: String?,
+    val serverIp: String,
+    val updateTime: String,
 )
 
 fun ServersDto.toServersEntity(): ServersEntity{
@@ -35,6 +37,8 @@ fun ServersDto.toServersEntity(): ServersEntity{
         rating = rating,
         server_flag = server_flag,
         wipe = wipe,
-        wipe_schedule = wipe_schedule
+        wipe_schedule = wipe_schedule,
+        serverIp = serverIp,
+        updateTime = updateTime
     )
 }
