@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="description_navigation_image_view">Navigation icon on the top right hand side</string>
+    <string name="description_dashboard_list_recyclerview">Widget for view of list members such as Crafting, Genetics, Servers, Settings</string>
 </resources>

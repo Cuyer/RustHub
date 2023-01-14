@@ -1,4 +1,4 @@
-package com.cuyer.rusthub
+package com.cuyer.rusthub.di
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

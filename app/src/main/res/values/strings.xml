@@ -2,4 +2,7 @@
     <string name="app_name">Rust Hub</string>
     <string name="description_navigation_image_view">Navigation icon on the top right hand side</string>
     <string name="description_top_bar_icon_image_view">RustHub logo on the left hand side</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="description_dashboard_list_recyclerview">Widget for view of list members such as Crafting, Genetics, Servers, Settings</string>
 </resources>
