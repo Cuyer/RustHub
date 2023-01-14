@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">RustHub</string>
+    <string name="app_name">Rust Hub</string>
+    <string name="description_navigation_image_view">Navigation icon on the top right hand side</string>
+    <string name="description_top_bar_icon_image_view">RustHub logo on the left hand side</string>
 </resources>
