@@ -8,6 +8,7 @@ data class CalculatorsListModel(
     val image: Int = 0,
     val text: String = "",
     val action: Fragment? = null,
+    val tag: String = ""
 )
 
 fun CalculatorsListModel.toListModel(): List<CalculatorsListModel>{

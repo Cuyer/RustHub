@@ -55,9 +55,16 @@ class CalculatorsListAdapter(
         holder.imageView.setImageResource(calculatorsList[position].image)
         holder.cardView.setOnClickListener{
             val activity  = it.context as? AppCompatActivity
+            val newFragmentTag = calculatorsList[position].tag
             val newFragment: Fragment = calculatorsList[position].action!!
-            activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(holder.fragmentContainerView.id, newFragment)?.addToBackStack(null)?.commit()
+            activity?.supportFragmentManager
+                ?.beginTransaction()
+                ?.setCustomAnimations(R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right)
+                ?.replace(holder.fragmentContainerView.id, newFragment, newFragmentTag)
+                ?.addToBackStack(newFragmentTag)?.commit()
             holder.topBarTextView.text = calculatorsList[position].text
         }
     }
