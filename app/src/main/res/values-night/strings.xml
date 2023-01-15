@@ -2,4 +2,5 @@
 <resources>
     <string name="description_navigation_image_view">Navigation icon on the top right hand side</string>
     <string name="description_dashboard_list_recyclerview">Widget for view of list members such as Crafting, Genetics, Servers, Settings</string>
+    <string name="description_calculators_list_recyclerview">List of available calculators</string>
 </resources>

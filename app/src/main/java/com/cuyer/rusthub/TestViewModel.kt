@@ -1,6 +1,8 @@
 package com.cuyer.rusthub
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cuyer.rusthub.common.Resource
@@ -15,6 +17,14 @@ import javax.inject.Inject
 class TestViewModel @Inject constructor(
     private val getItemsUseCase: GetItemsUseCase,
     private val getServersUseCase: GetServersUseCase): ViewModel() {
+
+    private val _currentFragmentTag = MutableLiveData<String>()
+    val currentFragmentTag: LiveData<String>
+        get() = _currentFragmentTag
+
+    fun setCurrentFragmentTag(tag: String) {
+        _currentFragmentTag.value = tag
+    }
 
     fun getServers() {
         getServersUseCase().onEach { result ->

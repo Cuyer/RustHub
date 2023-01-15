@@ -1,4 +1,4 @@
-package com.cuyer.rusthub.presentation.dashboard
+package com.cuyer.rusthub.presentation.dashboard.calculators
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,19 +8,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.recyclerview.widget.RecyclerView
 import com.cuyer.rusthub.R
 import com.cuyer.rusthub.presentation.core.CoreActivity
+import kotlinx.android.synthetic.main.calculators_list_recyclerview.view.*
 import kotlinx.android.synthetic.main.dashboard_list_recyclerview.view.*
 
-class DashboardListAdapter(
-    private val dashboardList: List<DashboardListModel>,
+class CalculatorsListAdapter(
+    private val calculatorsList: List<CalculatorsListModel>,
     context: Context?)
-    : RecyclerView.Adapter<DashboardListAdapter.ViewHolder>() {
+    : RecyclerView.Adapter<CalculatorsListAdapter.ViewHolder>() {
 
     private val mContext = context
 
@@ -33,9 +32,9 @@ class DashboardListAdapter(
 
         init {
             val activity = mContext as CoreActivity
-            textView = view.DashboardListTextView
-            imageView = view.DashboardListImageView
-            cardView = view.DashboardList
+            textView = view.CalculatorsListTextView
+            imageView = view.CalculatorsListImageView
+            cardView = view.CalculatorsList
             fragmentContainerView = activity.findViewById(R.id.FragmentContainer)
             topBarTextView = activity.findViewById(R.id.TopBarTextView)
         }
@@ -43,26 +42,24 @@ class DashboardListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(mContext)
-            .inflate(R.layout.dashboard_list_recyclerview, parent, false)
+            .inflate(R.layout.calculators_list_recyclerview, parent, false)
         return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        return dashboardList.size
+        return calculatorsList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        holder.textView.text = dashboardList[position].text
-        holder.imageView.setImageResource(dashboardList[position].image)
+        holder.textView.text = calculatorsList[position].text
+        holder.imageView.setImageResource(calculatorsList[position].image)
         holder.cardView.setOnClickListener{
             val activity  = it.context as? AppCompatActivity
-            val newFragmentTag = dashboardList[position].tag
-            val newFragment: Fragment = dashboardList[position].action!!
+            val newFragment: Fragment = calculatorsList[position].action!!
             activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(holder.fragmentContainerView.id, newFragment, newFragmentTag)?.addToBackStack(newFragmentTag)?.commit()
-            holder.topBarTextView.text = dashboardList[position].text
+                ?.replace(holder.fragmentContainerView.id, newFragment)?.addToBackStack(null)?.commit()
+            holder.topBarTextView.text = calculatorsList[position].text
         }
-
     }
+
 }
