@@ -1,6 +1,8 @@
 package com.cuyer.rusthub.presentation.dashboard
 
 import android.content.Context
+import android.transition.Fade
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,7 +62,13 @@ class DashboardListAdapter(
             val newFragmentTag = dashboardList[position].tag
             val newFragment: Fragment = dashboardList[position].action!!
             activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(holder.fragmentContainerView.id, newFragment, newFragmentTag)?.addToBackStack(newFragmentTag)?.commit()
+                ?.setCustomAnimations(R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right)
+                ?.replace(holder.fragmentContainerView.id, newFragment, newFragmentTag)
+                ?.addToBackStack(newFragmentTag)
+                ?.commit()
             holder.topBarTextView.text = dashboardList[position].text
         }
 
