@@ -9,13 +9,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cuyer.rusthub.R
-import com.cuyer.rusthub.presentation.core.TestViewModel
+import com.cuyer.rusthub.presentation.core.CoreViewModel
+import com.cuyer.rusthub.presentation.dashboard.calculators.crafting.CraftingFragment
 
 class DashboardFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: DashboardListAdapter
-    private val viewModel by activityViewModels<TestViewModel>()
+    private val viewModel by activityViewModels<CoreViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +33,12 @@ class DashboardFragment : Fragment() {
         adapter = DashboardListAdapter(DashboardListModel().toListModel(), context)
         recyclerView.adapter = adapter
         return rootView
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        viewModel.setCurrentFragmentTag(TAG)
+        viewModel.setCurrentFragmentName(getString(R.string.app_name))
     }
 
     companion object {

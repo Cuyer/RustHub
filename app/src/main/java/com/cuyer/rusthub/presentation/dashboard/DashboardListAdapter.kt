@@ -61,7 +61,8 @@ class DashboardListAdapter(
             val activity  = it.context as? AppCompatActivity
             val newFragmentTag = dashboardList[position].tag
             val newFragment: Fragment = dashboardList[position].action!!
-            activity?.supportFragmentManager?.beginTransaction()
+            activity?.supportFragmentManager
+                ?.beginTransaction()
                 ?.setCustomAnimations(R.anim.slide_in_right,
                     R.anim.slide_out_left,
                     R.anim.slide_in_left,

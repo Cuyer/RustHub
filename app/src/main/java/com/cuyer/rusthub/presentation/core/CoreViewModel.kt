@@ -16,19 +16,25 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
-class TestViewModel @Inject constructor(
+class CoreViewModel @Inject constructor(
     private val getItemsUseCase: GetItemsUseCase,
     private val getServersUseCase: GetServersUseCase): ViewModel() {
 
     private val _getItemsState = MutableLiveData<ItemsState>()
     val getItemsState: LiveData<ItemsState>
         get() = _getItemsState
+
     private val _getServersState = MutableLiveData<ServersState>()
     val getServersState: LiveData<ServersState>
         get() = _getServersState
+
     private val _currentFragmentTag = MutableLiveData<String>()
     val currentFragmentTag: LiveData<String>
         get() = _currentFragmentTag
+
+    private val _currentFragmentName = MutableLiveData<String>()
+    val currentFragmentName: LiveData<String>
+        get() = _currentFragmentName
 
     init {
         runBlocking {
@@ -38,6 +44,10 @@ class TestViewModel @Inject constructor(
 
     fun setCurrentFragmentTag(tag: String) {
         _currentFragmentTag.value = tag
+    }
+
+    fun setCurrentFragmentName(name: String) {
+        _currentFragmentName.value = name
     }
 
     fun getServers() {

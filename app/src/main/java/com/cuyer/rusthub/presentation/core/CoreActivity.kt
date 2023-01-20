@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.activity_core.*
 @AndroidEntryPoint
 class CoreActivity : AppCompatActivity() {
 
-    private val viewModel by viewModels<TestViewModel>()
+    private val viewModel by viewModels<CoreViewModel>()
     private lateinit var dashboardFragment: DashboardFragment
     private lateinit var fragmentContainer: FragmentContainerView
     private lateinit var topBar: ConstraintLayout
@@ -49,8 +49,6 @@ class CoreActivity : AppCompatActivity() {
         topBar = TopBar
         slideAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_in_right)
 
-        currentFragmentTag = viewModel.currentFragmentTag.value.toString()
-
 
         splashScreen.setOnExitAnimationListener { splashScreenView ->
             val slideBack = ObjectAnimator.ofFloat(
@@ -67,21 +65,25 @@ class CoreActivity : AppCompatActivity() {
             slideBack.start()
         }
 
-        val currentFragment = supportFragmentManager
-            .findFragmentByTag(currentFragmentTag)
-        if (currentFragment != null) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(FragmentContainer.id, currentFragment, currentFragmentTag)
-                .commit()
-        } else {
-            Log.d("FragmentTag", "I was called")
-            supportFragmentManager.beginTransaction().replace(
-                FragmentContainer.id,
-                dashboardFragment,
-                "dashboard_fragment")
-                .commit()
+        viewModel.currentFragmentTag.observe(this) { fragmentTag ->
+            currentFragmentTag = fragmentTag.toString()
+            Log.d("FragmentTag", "$currentFragmentTag")
+
+            val currentFragment = supportFragmentManager
+                .findFragmentByTag(currentFragmentTag)
+
+            if (currentFragment != null) {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(FragmentContainer.id, currentFragment, currentFragmentTag)
+                    .commit()
+            }
         }
+
+        viewModel.currentFragmentName.observe(this) {fragmentName ->
+            topBarTextView.text = fragmentName.toString()
+        }
+
 
         viewModel.getItemsState.observe(this){
             if (it.isLoading && it.items.isEmpty()) {
@@ -123,11 +125,5 @@ class CoreActivity : AppCompatActivity() {
         }
 
 
-    }
-
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        topBarTextView.text = getString(R.string.app_name)
     }
 }

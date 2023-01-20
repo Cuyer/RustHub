@@ -7,4 +7,5 @@
     <string name="downloading_items">Downloading Items</string>
     <string name="downloading_servers">Downloading Servers</string>
     <string name="download_error">Failed to connect to the server, please check your internet connection and reopen the app</string>
+    <string name="search_hint">Search</string>
 </resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.dashboard.calculators.crafting.CraftingFragment">
+
+
+    <ImageView
+        android:id="@+id/CraftingFilterIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/ic_filter"
+        app:layout_constraintBottom_toBottomOf="@+id/SearchLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/SearchLayout"
+        app:layout_constraintTop_toTopOf="@+id/SearchLayout" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/SearchLayout"
+        style="@style/SearchBarStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:focusable="true"
+        android:hint="@string/search_hint"
+        android:imeOptions="actionDone"
+        android:textColorHint="@color/text_night"
+        app:boxBackgroundMode="outline"
+        app:hintTextColor="@color/text_night"
+        app:layout_constraintEnd_toStartOf="@id/CraftingFilterIcon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/SearchEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/poppins"
+            android:inputType="text"
+            android:maxLines="1"
+            android:nextFocusLeft="@id/SearchEdit"
+            android:nextFocusUp="@id/SearchEdit"
+            android:textColor="@color/text_night"
+            android:textCursorDrawable="@null" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

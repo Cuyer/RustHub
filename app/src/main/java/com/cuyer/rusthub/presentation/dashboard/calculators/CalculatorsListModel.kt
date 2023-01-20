@@ -3,6 +3,7 @@ package com.cuyer.rusthub.presentation.dashboard.calculators
 import androidx.fragment.app.Fragment
 import com.cuyer.rusthub.R
 import com.cuyer.rusthub.presentation.dashboard.DashboardListModel
+import com.cuyer.rusthub.presentation.dashboard.calculators.crafting.CraftingFragment
 
 data class CalculatorsListModel(
     val image: Int = 0,
@@ -13,7 +14,7 @@ data class CalculatorsListModel(
 
 fun CalculatorsListModel.toListModel(): List<CalculatorsListModel>{
     val list = mutableListOf<CalculatorsListModel>()
-    list.add(CalculatorsListModel(R.drawable.ic_crafting_calculator, "Crafting"))
+    list.add(CalculatorsListModel(R.drawable.ic_crafting_calculator, "Crafting", CraftingFragment(), "crafting_fragment"))
     list.add(CalculatorsListModel(R.drawable.ic_raid_calculator, "Raid"))
     list.add(CalculatorsListModel(R.drawable.ic_scrap_calculator, "Scrap"))
     return list
