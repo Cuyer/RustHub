@@ -3,4 +3,8 @@
     <string name="description_navigation_image_view">Navigation icon on the top right hand side</string>
     <string name="description_dashboard_list_recyclerview">Widget for view of list members such as Crafting, Genetics, Servers, Settings</string>
     <string name="description_calculators_list_recyclerview">List of available calculators</string>
+    <string name="description_splash_screen_image_view">Rust Hub application splash screen image</string>
+    <string name="downloading_items">Downloading Items</string>
+    <string name="downloading_servers">Downloading Servers</string>
+    <string name="download_error">Failed to connect to the server, please check your internet connection and reopen the app</string>
 </resources>

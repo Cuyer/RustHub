@@ -1,5 +1,6 @@
 package com.cuyer.rusthub.domain.use_case.get_items
 
+import android.util.Log
 import com.cuyer.rusthub.common.Resource
 import com.cuyer.rusthub.data.local.ItemsDao
 import com.cuyer.rusthub.data.remote.dto.items.toItemsEntity
@@ -18,18 +19,21 @@ class GetItemsUseCase @Inject constructor(
         emit(Resource.Loading())
         val items = dao.getAllItems().map { it.toItems() }
         emit(Resource.Loading(data = items))
-
-        try {
-            val remoteItems = repository.getItems()
-            dao.deleteItems()
-            dao.insertItems(remoteItems.map { it.toItemsEntity() })
-        } catch (e: HttpException) {
-            emit(Resource.Error(e.message() ?: "An unexpected error occurred", data = items ))
-        } catch (e: IOException) {
-            emit(Resource.Error(e.message ?: "Couldn't reach server. Check your internet connection.", data = items))
+        if (items.isEmpty()) {
+            try {
+                val remoteItems = repository.getItems()
+                dao.deleteItems()
+                dao.insertItems(remoteItems.map { it.toItemsEntity() })
+                val newItems = dao.getAllItems().map { it.toItems() }
+                emit(Resource.Success(newItems))
+            } catch (e: HttpException) {
+                Log.d("Exception", "invoke: ${e.message}")
+                emit(Resource.Error(e.message() ?: "An unexpected error occurred", data = items ))
+            } catch (e: IOException) {
+                Log.d("Exception", "invoke: ${e.message}")
+                emit(Resource.Error(e.message ?: "Couldn't reach server. Check your internet connection.", data = items))
+            }
         }
-
-        val newItems = dao.getAllItems().map { it.toItems() }
-        emit(Resource.Success(newItems))
+        emit(Resource.Success(data = items))
     }
 }

@@ -2,7 +2,6 @@ package com.cuyer.rusthub.presentation.dashboard.calculators
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cuyer.rusthub.R
-import com.cuyer.rusthub.TestViewModel
-import com.cuyer.rusthub.common.RecyclerItemDecoration
+import com.cuyer.rusthub.presentation.core.TestViewModel
 
 
 class CalculatorsFragment : Fragment() {

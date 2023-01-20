@@ -19,17 +19,24 @@ class GetServersUseCase @Inject constructor(
         emit(Resource.Loading())
         val servers = dao.getAllServers().map { it.toServers() }
         emit(Resource.Loading(data = servers))
-
-        try {
-            val remoteServers = repository.getServers()
-            dao.deleteServers()
-            dao.insertServers(remoteServers.map { it.toServersEntity() })
-        } catch (e: HttpException) {
-            emit(Resource.Error(e.message() ?: "An unexpected error occurred", data = servers ))
-        } catch (e: IOException) {
-            emit(Resource.Error(e.message ?: "Couldn't reach server. Check your internet connection.", data = servers))
+        if (servers.isEmpty()) {
+            try {
+                val remoteServers = repository.getServers()
+                dao.deleteServers()
+                dao.insertServers(remoteServers.map { it.toServersEntity() })
+                val newServers = dao.getAllServers().map { it.toServers() }
+                emit(Resource.Success(newServers))
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.message() ?: "An unexpected error occurred", data = servers))
+            } catch (e: IOException) {
+                emit(
+                    Resource.Error(
+                        e.message ?: "Couldn't reach server. Check your internet connection.",
+                        data = servers
+                    )
+                )
+            }
         }
-        val newServers = dao.getAllServers().map { it.toServers() }
-        emit(Resource.Success(newServers))
+        emit(Resource.Success(data = servers))
     }
 }

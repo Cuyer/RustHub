@@ -7,25 +7,53 @@
     android:layout_height="match_parent"
     tools:context=".presentation.core.CoreActivity">
 
+
+    <ProgressBar
+        android:id="@+id/CoreProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TopBar" />
+
+    <TextView
+        android:id="@+id/CoreMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/text_night"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CoreProgressBar" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/FragmentContainer"
         android:name="com.cuyer.rusthub.presentation.dashboard.DashboardFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/TopBar"
+        app:layout_constraintVertical_bias="1.0"
         tools:layout="@layout/fragment_dashboard" />
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/TopBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="4dp"
         android:background="@color/widget_night"
+        android:elevation="4dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -59,13 +87,12 @@
             android:id="@+id/TopBarImageView"
             android:layout_width="72dp"
             android:layout_height="72dp"
-            android:elevation="10dp"
             android:background="@drawable/ic_toolbar_logo"
             android:contentDescription="@string/description_top_bar_icon_image_view"
+            android:elevation="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-             />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
