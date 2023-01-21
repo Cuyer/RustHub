@@ -1,29 +1,39 @@
 package com.cuyer.rusthub.presentation.dashboard.calculators.crafting
 
-import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.cuyer.rusthub.R
-import com.cuyer.rusthub.presentation.core.CoreActivity
+import com.cuyer.rusthub.domain.model.Items
 import com.cuyer.rusthub.presentation.core.CoreViewModel
-import com.cuyer.rusthub.presentation.dashboard.calculators.CalculatorsFragment
-import kotlinx.android.synthetic.main.activity_core.*
+import com.google.android.material.textfield.TextInputEditText
+import kotlinx.android.synthetic.main.fragment_crafting.view.*
+import kotlinx.coroutines.*
 
 
 class CraftingFragment : Fragment() {
 
     private val viewModel by activityViewModels<CoreViewModel>()
     private var onBackPressedCalled = false
+    private lateinit var adapter: CraftingListAdapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var searchEditText: TextInputEditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        viewModel.getItemsFromDb()
     }
 
     override fun onCreateView(
@@ -31,6 +41,34 @@ class CraftingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_crafting, container, false)
+        searchEditText = rootView.SearchEdit
+
+
+        viewModel.getItemsList.observe(viewLifecycleOwner) { itemsList ->
+            if (itemsList.isNotEmpty()) {
+                searchEditText.addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    }
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        val filteredList = itemsList.filter { it.scrappedComponents[0]
+                            .item.contains(s.toString(), ignoreCase = true) }
+                        viewModel.setSearchValue(s.toString())
+                        adapter.updateList(filteredList)
+                    }
+                    override fun afterTextChanged(p0: Editable?) {
+                    }
+                })
+
+                recyclerView = rootView.CraftingRecyclerView
+                recyclerView.layoutManager = LinearLayoutManager(activity)
+                adapter = CraftingListAdapter(itemsList, context)
+                recyclerView.adapter = adapter
+
+                searchEditText.setText(viewModel.searchValue.value)
+                val filteredList = itemsList.filter { it.scrappedComponents[0].item.contains(viewModel.searchValue.value.toString(), ignoreCase = true) }
+                adapter.updateList(filteredList)
+            }
+        }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             viewModel.setCurrentFragmentName("Calculators")
@@ -40,6 +78,7 @@ class CraftingFragment : Fragment() {
         }
         return rootView
     }
+
 
     override fun onDetach() {
         super.onDetach()

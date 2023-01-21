@@ -7,6 +7,16 @@
     tools:context=".presentation.dashboard.calculators.crafting.CraftingFragment">
 
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/CraftingRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SearchLayout" />
+
     <ImageView
         android:id="@+id/CraftingFilterIcon"
         android:layout_width="wrap_content"
@@ -25,6 +35,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        app:boxBackgroundColor="@color/widget_night"
         android:focusable="true"
         android:hint="@string/search_hint"
         android:imeOptions="actionDone"

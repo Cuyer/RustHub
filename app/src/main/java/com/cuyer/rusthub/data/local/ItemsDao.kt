@@ -18,8 +18,8 @@ interface ItemsDao {
     @Query("SELECT * FROM itemsentity")
     suspend fun getAllItems() : List<ItemsEntity>
 
-    @Query("SELECT * FROM itemsentity WHERE Image LIKE '%' || :Image || '%'")
-    suspend fun getItem(Image: String): List<ItemsEntity>
+    @Query("SELECT * FROM itemsentity WHERE scrappedComponents LIKE '%' || :item || '%'")
+    suspend fun getItem(item: String): List<ItemsEntity>
 
     @Query("SELECT * FROM itemsentity WHERE Image LIKE '%' || :Image || '%'" +
             " AND Craftable LIKE '%' || :Craftable || '%' " +

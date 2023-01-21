@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cuyer.rusthub.common.Resource
+import com.cuyer.rusthub.domain.model.Items
 import com.cuyer.rusthub.domain.model.ItemsState
 import com.cuyer.rusthub.domain.model.ServersState
+import com.cuyer.rusthub.domain.use_case.get_items.GetItemsFromDbUseCase
 import com.cuyer.rusthub.domain.use_case.get_items.GetItemsUseCase
 import com.cuyer.rusthub.domain.use_case.get_servers.GetServersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CoreViewModel @Inject constructor(
     private val getItemsUseCase: GetItemsUseCase,
-    private val getServersUseCase: GetServersUseCase): ViewModel() {
+    private val getServersUseCase: GetServersUseCase,
+    private val getItemsFromDbUseCase: GetItemsFromDbUseCase): ViewModel() {
 
     private val _getItemsState = MutableLiveData<ItemsState>()
     val getItemsState: LiveData<ItemsState>
@@ -36,6 +39,18 @@ class CoreViewModel @Inject constructor(
     val currentFragmentName: LiveData<String>
         get() = _currentFragmentName
 
+    private val _getItemsList = MutableLiveData<List<Items>>()
+    val getItemsList: LiveData<List<Items>>
+        get() = _getItemsList
+
+    private val _searchValue = MutableLiveData<String>()
+    val searchValue: LiveData<String> = _searchValue
+
+
+    fun setSearchValue(value: String) {
+        _searchValue.value = value
+    }
+
     init {
         runBlocking {
             getServers()
@@ -50,7 +65,23 @@ class CoreViewModel @Inject constructor(
         _currentFragmentName.value = name
     }
 
-    fun getServers() {
+    fun getItemsFromDb() {
+        getItemsFromDbUseCase().onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _getItemsList.value = result.data ?: emptyList()
+                }
+                is Resource.Error -> {
+
+                }
+                is Resource.Loading -> {
+
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    private fun getServers() {
         getServersUseCase().onEach { result ->
             when (result) {
                 is Resource.Success -> {
@@ -74,7 +105,7 @@ class CoreViewModel @Inject constructor(
         }.launchIn(viewModelScope).invokeOnCompletion { getItems() }
     }
 
-    fun getItems() {
+    private fun getItems() {
         getItemsUseCase().onEach { result ->
             when (result) {
                 is Resource.Success -> {
