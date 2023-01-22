@@ -96,7 +96,7 @@ class CraftingListAdapter(
         holder.craftingItemType.text = craftingList[position].type
         holder.craftingItemType.alpha = 0.5f
         holder.expandableLayout.layoutManager = LinearLayoutManager(mContext)
-        holder.expandableLayout.adapter = CraftingExpandableListAdapter(craftingList[position].ingredients, mContext)
+        holder.expandableLayout.adapter = CraftingExpandableListAdapter(craftingList[position].ingredients, craftingList[position].image, mContext)
     }
 
     fun updateList(newList: List<Items>) {

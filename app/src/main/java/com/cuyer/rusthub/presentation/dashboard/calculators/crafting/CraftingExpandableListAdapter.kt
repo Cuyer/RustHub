@@ -7,20 +7,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cuyer.rusthub.R
 import com.cuyer.rusthub.data.remote.dto.items.Ingredient
-import com.cuyer.rusthub.domain.model.Items
+import com.cuyer.rusthub.presentation.core.CoreActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.crafting_list_recyclerview_expanded.view.*
 import kotlinx.android.synthetic.main.footer_layout.view.*
+import kotlinx.android.synthetic.main.fragment_crafting.*
 
-class CraftingExpandableListAdapter(private val craftingExpandableList: List<Ingredient>, context: Context?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CraftingExpandableListAdapter(private val craftingExpandableList: List<Ingredient>, private val currentImage: String, context: Context?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val mContext = context
     private val FOOTER_TYPE = 0
     private val ITEM_TYPE = 1
@@ -91,6 +92,25 @@ class CraftingExpandableListAdapter(private val craftingExpandableList: List<Ing
                 }
 
             })
+
+            button.setOnClickListener {
+                val slideUpAnimation = AnimationUtils.loadAnimation(mContext, R.anim.slide_up)
+                val amountObject = mutableMapOf<String, Any>()
+                amountObject["MainIcon"] = currentImage
+                amountObject["Amount"] = editText.text.toString()
+                for (i in craftingExpandableList.indices) {
+                    amountObject["Icon[$i]"] = craftingExpandableList[i].href
+                    amountObject["Title[$i]"] = craftingExpandableList[i].title
+                    amountObject["Values[$i]"] = craftingExpandableList[i].value
+                }
+                val activity = mContext as CoreActivity
+                if (activity.CraftingViewDetails.visibility == View.GONE) {
+                    activity.CraftingViewDetails.visibility = View.VISIBLE
+                    activity.CraftingViewDetails.startAnimation(slideUpAnimation)
+                }
+                Log.d("amountObject", "$amountObject")
+            }
+
         }
     }
 
