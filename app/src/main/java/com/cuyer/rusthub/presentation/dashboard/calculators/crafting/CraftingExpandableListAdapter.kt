@@ -66,16 +66,31 @@ class CraftingExpandableListAdapter(private val craftingExpandableList: List<Ing
             for (i in craftingExpandableList.indices) {
                 originalValues.add(craftingExpandableList[i].value.toInt())
             }
-            button.setOnClickListener {
-                if (editText.text.toString().isNotEmpty()) {
-                    val enteredValue = editText.text.toString().toInt()
-                    for (i in craftingExpandableList.indices) {
-                        val newValue = (enteredValue * originalValues[i]).toString()
-                        craftingExpandableList[i].value = newValue
-                    }
-                    notifyDataSetChanged()
+
+            editText.addTextChangedListener(object: TextWatcher{
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 }
-            }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun afterTextChanged(p0: Editable?) {
+                    if (p0.toString().isNotEmpty()) {
+                        val enteredValue = p0.toString().toInt()
+                        for (i in craftingExpandableList.indices) {
+                            val newValue = (enteredValue * originalValues[i]).toString()
+                            craftingExpandableList[i].value = newValue
+                            notifyDataSetChanged()
+                        }
+                    } else {
+                        for (i in craftingExpandableList.indices) {
+                            craftingExpandableList[i].value = originalValues[i].toString()
+                            notifyDataSetChanged()
+                        }
+                    }
+                }
+
+            })
         }
     }
 
