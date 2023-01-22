@@ -46,11 +46,12 @@ class CraftingFragment : Fragment() {
 
         viewModel.getItemsList.observe(viewLifecycleOwner) { itemsList ->
             if (itemsList.isNotEmpty()) {
+                val craftableItemsList = itemsList.filter { it.craftable!! == "Yes" }
                 searchEditText.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     }
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                        val filteredList = itemsList.filter { it.scrappedComponents[0]
+                        val filteredList = craftableItemsList.filter { it.scrappedComponents[0]
                             .item.contains(s.toString(), ignoreCase = true) }
                         viewModel.setSearchValue(s.toString())
                         adapter.updateList(filteredList)
@@ -61,11 +62,11 @@ class CraftingFragment : Fragment() {
 
                 recyclerView = rootView.CraftingRecyclerView
                 recyclerView.layoutManager = LinearLayoutManager(activity)
-                adapter = CraftingListAdapter(itemsList, context)
+                adapter = CraftingListAdapter(craftableItemsList, context)
                 recyclerView.adapter = adapter
 
                 searchEditText.setText(viewModel.searchValue.value)
-                val filteredList = itemsList.filter { it.scrappedComponents[0].item.contains(viewModel.searchValue.value.toString(), ignoreCase = true) }
+                val filteredList = craftableItemsList.filter { it.scrappedComponents[0].item.contains(viewModel.searchValue.value.toString(), ignoreCase = true) }
                 adapter.updateList(filteredList)
             }
         }

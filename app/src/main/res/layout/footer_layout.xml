@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:gravity="center">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/CraftingInputLayout"
+        style="@style/SearchBarStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:focusable="true"
+        android:hint="@string/enter_amount"
+        android:imeOptions="actionDone"
+        android:textColorHint="@color/text_night"
+        app:boxBackgroundColor="#252525"
+        app:boxBackgroundMode="outline"
+        app:hintTextColor="@color/text_night">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/footerEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:inputType="number"
+            android:maxLines="1"
+            android:nextFocusLeft="@id/footerEditText"
+            android:nextFocusUp="@id/footerEditText"
+            android:textColor="@color/text_night"
+            android:textCursorDrawable="@null"
+            android:textSize="14sp"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/footerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="15dp"
+        android:backgroundTint="#CE422B"
+        android:layout_weight="1"
+        android:textColor="@color/text_night"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/add"
+        android:textSize="15sp"
+        app:cornerRadius="0dp" />
+
+</LinearLayout>
