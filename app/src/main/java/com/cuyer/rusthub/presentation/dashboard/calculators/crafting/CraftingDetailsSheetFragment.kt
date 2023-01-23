@@ -4,21 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cuyer.rusthub.R
+import com.cuyer.rusthub.common.ItemTouchHelperAdapter
 import com.cuyer.rusthub.data.remote.dto.items.Ingredient
 import com.cuyer.rusthub.domain.model.CraftingItems
+import com.cuyer.rusthub.presentation.core.CoreActivity
 import com.cuyer.rusthub.presentation.core.CoreViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.android.synthetic.main.fragment_crafting.*
 import kotlinx.android.synthetic.main.fragment_crafting_details_sheet.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 
-class CraftingDetailsSheetFragment : BottomSheetDialogFragment() {
+class CraftingDetailsSheetFragment : BottomSheetDialogFragment(), ItemTouchHelperAdapter {
 
     private lateinit var adapter: CraftingDetailsSheetAdapter
     private val viewModel by activityViewModels<CoreViewModel>()
@@ -49,12 +54,14 @@ class CraftingDetailsSheetFragment : BottomSheetDialogFragment() {
                                 Ingredient(href, ingredientGroup.first().title, ingredientGroup.sumBy { it.value.toInt() }.toString())
                             }
                         CraftingItems(mainIcon, group.sumBy { it.amount.toInt() }.toString(), ingredients)
-                    }
+                    }.toMutableList()
 
                 recyclerView = rootView.CraftingDetailsSheetRecyclerView
                 recyclerView.layoutManager = LinearLayoutManager(activity)
                 adapter = CraftingDetailsSheetAdapter(mergedData, context)
                 recyclerView.adapter = adapter
+                val itemTouchHelper = ItemTouchHelper(adapter.itemTouchHelperCallback)
+                itemTouchHelper.attachToRecyclerView(recyclerView)
             }
         }
         return rootView
@@ -72,6 +79,14 @@ class CraftingDetailsSheetFragment : BottomSheetDialogFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        if (::adapter.isInitialized) {
+            viewModel.setCraftingItemsList(adapter.craftingDetailsList)
+        }
         EventBus.getDefault().unregister(this)
+    }
+
+    override fun onItemDismiss(position: Int) {
+        adapter.onItemDismiss(position)
+        adapter.notifyDataSetChanged()
     }
 }
