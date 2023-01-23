@@ -1,5 +1,6 @@
 package com.cuyer.rusthub.presentation.dashboard.calculators.crafting
 
+import com.cuyer.rusthub.data.remote.dto.items.Ingredient
 import com.cuyer.rusthub.domain.model.CraftingItems
 
 class CraftingDataHolder {
