@@ -1,26 +1,22 @@
 package com.cuyer.rusthub.presentation.dashboard.calculators.crafting
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.activity.addCallback
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cuyer.rusthub.R
-import com.cuyer.rusthub.domain.model.Items
 import com.cuyer.rusthub.presentation.core.CoreViewModel
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_crafting.view.*
-import kotlinx.coroutines.*
+import org.greenrobot.eventbus.EventBus
 
 
 class CraftingFragment : Fragment() {
@@ -30,7 +26,7 @@ class CraftingFragment : Fragment() {
     private lateinit var adapter: CraftingListAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchEditText: TextInputEditText
-
+    private lateinit var craftingDetailsButton: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.getItemsFromDb()
@@ -42,7 +38,13 @@ class CraftingFragment : Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_crafting, container, false)
         searchEditText = rootView.SearchEdit
+        craftingDetailsButton = rootView.CraftingDetailsExpand
 
+        craftingDetailsButton.setOnClickListener {
+            CraftingDetailsSheetFragment().show(childFragmentManager, "crafting_details_sheet")
+            EventBus.getDefault().postSticky(CraftingEvent(CraftingDataHolder.getData()))
+            CraftingDataHolder.removeData()
+        }
 
         viewModel.getItemsList.observe(viewLifecycleOwner) { itemsList ->
             if (itemsList.isNotEmpty()) {

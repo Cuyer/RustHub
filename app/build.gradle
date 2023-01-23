@@ -90,6 +90,9 @@ dependencies {
     // picasso
     implementation 'com.squareup.picasso:picasso:2.8'
 
+    //event bus
+    implementation("org.greenrobot:eventbus:3.3.1")
+
     apply plugin: 'com.android.application'
     apply plugin: 'kotlin-android'
     apply plugin: 'kotlin-android-extensions'

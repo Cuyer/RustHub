@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cuyer.rusthub.common.Resource
+import com.cuyer.rusthub.domain.model.CraftingItems
 import com.cuyer.rusthub.domain.model.Items
 import com.cuyer.rusthub.domain.model.ItemsState
 import com.cuyer.rusthub.domain.model.ServersState
@@ -22,6 +23,10 @@ class CoreViewModel @Inject constructor(
     private val getItemsUseCase: GetItemsUseCase,
     private val getServersUseCase: GetServersUseCase,
     private val getItemsFromDbUseCase: GetItemsFromDbUseCase): ViewModel() {
+
+    private val _craftingItemsList = MutableLiveData<List<CraftingItems>>()
+    val craftingItemsList: LiveData<List<CraftingItems>>
+        get() = _craftingItemsList
 
     private val _getItemsState = MutableLiveData<ItemsState>()
     val getItemsState: LiveData<ItemsState>
@@ -49,6 +54,10 @@ class CoreViewModel @Inject constructor(
 
     fun setSearchValue(value: String) {
         _searchValue.value = value
+    }
+
+    fun setCraftingItemsList(craftingItems: List<CraftingItems>) {
+        _craftingItemsList.value = craftingItems
     }
 
     init {

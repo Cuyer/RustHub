@@ -3,7 +3,6 @@ package com.cuyer.rusthub.presentation.dashboard.calculators.crafting
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cuyer.rusthub.R
 import com.cuyer.rusthub.data.remote.dto.items.Ingredient
+import com.cuyer.rusthub.domain.model.CraftingItems
 import com.cuyer.rusthub.presentation.core.CoreActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.squareup.picasso.Picasso
@@ -21,7 +21,12 @@ import kotlinx.android.synthetic.main.crafting_list_recyclerview_expanded.view.*
 import kotlinx.android.synthetic.main.footer_layout.view.*
 import kotlinx.android.synthetic.main.fragment_crafting.*
 
-class CraftingExpandableListAdapter(private val craftingExpandableList: List<Ingredient>, private val currentImage: String, context: Context?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CraftingExpandableListAdapter(
+    private val craftingExpandableList: List<Ingredient>,
+    private val currentImage: String,
+    context: Context?) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
     private val mContext = context
     private val FOOTER_TYPE = 0
     private val ITEM_TYPE = 1
@@ -95,22 +100,30 @@ class CraftingExpandableListAdapter(private val craftingExpandableList: List<Ing
 
             button.setOnClickListener {
                 val slideUpAnimation = AnimationUtils.loadAnimation(mContext, R.anim.slide_up)
-                val amountObject = mutableMapOf<String, Any>()
-                amountObject["MainIcon"] = currentImage
-                amountObject["Amount"] = editText.text.toString()
+                val slideDownAnimation = AnimationUtils.loadAnimation(mContext, R.anim.slide_down)
+                val ingredientList = mutableListOf<Ingredient>()
+
                 for (i in craftingExpandableList.indices) {
-                    amountObject["Icon[$i]"] = craftingExpandableList[i].href
-                    amountObject["Title[$i]"] = craftingExpandableList[i].title
-                    amountObject["Values[$i]"] = craftingExpandableList[i].value
+                    ingredientList.add(
+                        Ingredient(
+                            href = craftingExpandableList[i].href,
+                            title = craftingExpandableList[i].title,
+                            value = craftingExpandableList[i].value
+                        )
+                    )
                 }
+                val craftingItems = CraftingItems(mainIcon = currentImage, amount = editText.text.toString(), ingredientList)
+                CraftingDataHolder.addData(craftingItems)
+
                 val activity = mContext as CoreActivity
-                if (activity.CraftingViewDetails.visibility == View.GONE) {
+                if (CraftingDataHolder.getData().isNotEmpty() && activity.CraftingViewDetails.visibility == View.GONE) {
                     activity.CraftingViewDetails.visibility = View.VISIBLE
                     activity.CraftingViewDetails.startAnimation(slideUpAnimation)
+                } else if (CraftingDataHolder.getData().isEmpty()){
+                    activity.CraftingViewDetails.visibility = View.GONE
+                    activity.CraftingViewDetails.startAnimation(slideDownAnimation)
                 }
-                Log.d("amountObject", "$amountObject")
             }
-
         }
     }
 
