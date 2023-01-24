@@ -4,4 +4,20 @@
     <style name="SearchBarStyle">
         <item name="boxStrokeColor">@color/text_input_box_stroke</item>
     </style>
+
+    <style name="FilterBarStyle" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxStrokeColor">@color/text_input_box_stroke</item>
+    </style>
+
+    <style name="AppTheme.FullScreenDialog" parent="Theme.RustHub">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@color/background_night</item>
+        <item name="actionMenuTextColor">@color/text_night</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="Slide">
+        <item name="android:windowEnterAnimation">@anim/filter_slide_up</item>
+        <item name="android:windowExitAnimation">@anim/filter_slide_down</item>
+    </style>
 </resources>

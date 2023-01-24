@@ -89,7 +89,8 @@ class CraftingFragment : Fragment() {
         filterImageView = rootView.CraftingFilterIcon
 
         filterImageView.setOnClickListener {
-        //TODO dodać włączanie filtrów
+            val craftingFiltersDialog = CraftingFiltersDialog()
+            craftingFiltersDialog.show(childFragmentManager, "crafting_filters_dialog")
         }
 
         return rootView
