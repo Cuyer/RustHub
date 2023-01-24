@@ -68,5 +68,4 @@ class CalculatorsListAdapter(
             holder.topBarTextView.text = calculatorsList[position].text
         }
     }
-
 }

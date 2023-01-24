@@ -32,6 +32,7 @@
             android:maxLines="1"
             android:nextFocusLeft="@id/footerEditText"
             android:nextFocusUp="@id/footerEditText"
+            android:imeOptions="actionDone"
             android:textColor="@color/text_night"
             android:textCursorDrawable="@null"
             android:textSize="14sp"

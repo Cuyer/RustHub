@@ -1,7 +1,6 @@
 package com.cuyer.rusthub.presentation.dashboard.calculators.crafting
 
 import android.content.Context
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +9,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Slide
-import androidx.transition.Transition
-import androidx.transition.TransitionManager
 import com.cuyer.rusthub.R
 import com.cuyer.rusthub.domain.model.Items
 import com.squareup.picasso.Picasso

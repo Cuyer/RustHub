@@ -84,7 +84,8 @@ class CraftingDetailsSheetAdapter(
                 CraftingDataHolder.removeData()
                 val activity = mContext as CoreActivity
                 activity.CraftingViewDetails.visibility = View.GONE
-                activity.CraftingViewDetails.startAnimation(slideDownAnimation)
+                val parentFragment = activity.supportFragmentManager.findFragmentByTag("crafting_fragment") as CraftingFragment?
+                parentFragment?.dismissCraftingDetailsSheetFragment()
             }
         }
         override fun onChildDraw(

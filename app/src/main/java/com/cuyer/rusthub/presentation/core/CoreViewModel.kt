@@ -24,6 +24,8 @@ class CoreViewModel @Inject constructor(
     private val getServersUseCase: GetServersUseCase,
     private val getItemsFromDbUseCase: GetItemsFromDbUseCase): ViewModel() {
 
+    var scrollPosition: Int = 0
+
     private val _craftingItemsList = MutableLiveData<List<CraftingItems>>()
     val craftingItemsList: LiveData<List<CraftingItems>>
         get() = _craftingItemsList

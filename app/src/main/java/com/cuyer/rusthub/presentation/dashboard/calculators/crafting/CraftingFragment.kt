@@ -1,5 +1,6 @@
 package com.cuyer.rusthub.presentation.dashboard.calculators.crafting
 
+import android.media.Image
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.addCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +30,7 @@ class CraftingFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchEditText: TextInputEditText
     private lateinit var craftingDetailsButton: ImageView
+    private lateinit var filterImageView: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.getItemsFromDb()
@@ -63,7 +67,10 @@ class CraftingFragment : Fragment() {
                 })
 
                 recyclerView = rootView.CraftingRecyclerView
-                recyclerView.layoutManager = LinearLayoutManager(activity)
+                val layoutManager = LinearLayoutManager(context)
+                recyclerView.layoutManager = layoutManager
+                layoutManager.scrollToPosition(viewModel.scrollPosition)
+
                 adapter = CraftingListAdapter(craftableItemsList, context)
                 recyclerView.adapter = adapter
 
@@ -79,6 +86,12 @@ class CraftingFragment : Fragment() {
             isEnabled = false
             requireActivity().onBackPressed()
         }
+        filterImageView = rootView.CraftingFilterIcon
+
+        filterImageView.setOnClickListener {
+        //TODO dodać włączanie filtrów
+        }
+
         return rootView
     }
 
@@ -86,8 +99,19 @@ class CraftingFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         viewModel.setCurrentFragmentTag(TAG)
+        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+        viewModel.scrollPosition = layoutManager.findFirstVisibleItemPosition()
+
         if(!onBackPressedCalled) {
             viewModel.setCurrentFragmentName("Crafting")
+        }
+    }
+
+
+    fun dismissCraftingDetailsSheetFragment() {
+        val fragment = childFragmentManager.findFragmentByTag("crafting_details_sheet") as CraftingDetailsSheetFragment?
+        if (fragment != null && fragment.isVisible) {
+            fragment.dismiss()
         }
     }
 
