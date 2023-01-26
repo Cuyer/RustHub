@@ -5,16 +5,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cuyer.rusthub.common.Resource
+import com.cuyer.rusthub.data.local.entity.FiltersEntity
 import com.cuyer.rusthub.domain.model.CraftingItems
 import com.cuyer.rusthub.domain.model.Items
 import com.cuyer.rusthub.domain.model.ItemsState
 import com.cuyer.rusthub.domain.model.ServersState
+import com.cuyer.rusthub.domain.repository.filters.FiltersRepository
 import com.cuyer.rusthub.domain.use_case.get_items.GetItemsFromDbUseCase
 import com.cuyer.rusthub.domain.use_case.get_items.GetItemsUseCase
 import com.cuyer.rusthub.domain.use_case.get_servers.GetServersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -22,9 +26,14 @@ import javax.inject.Inject
 class CoreViewModel @Inject constructor(
     private val getItemsUseCase: GetItemsUseCase,
     private val getServersUseCase: GetServersUseCase,
-    private val getItemsFromDbUseCase: GetItemsFromDbUseCase): ViewModel() {
+    private val getItemsFromDbUseCase: GetItemsFromDbUseCase,
+    private val filtersRepository: FiltersRepository): ViewModel() {
 
     var scrollPosition: Int = 0
+
+
+    var filtersList: LiveData<List<FiltersEntity>>
+
 
     private val _craftingItemsList = MutableLiveData<List<CraftingItems>>()
     val craftingItemsList: LiveData<List<CraftingItems>>
@@ -65,6 +74,21 @@ class CoreViewModel @Inject constructor(
     init {
         runBlocking {
             getServers()
+            filtersList = filtersRepository.getAll()
+        }
+    }
+
+    fun setFilter(filter: FiltersEntity) {
+        viewModelScope.launch {
+            filtersRepository.delete()
+            filtersRepository.insert(filter)
+        }
+    }
+
+
+    fun deleteFilter() {
+        viewModelScope.launch {
+            filtersRepository.delete()
         }
     }
 

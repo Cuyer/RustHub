@@ -1,9 +1,11 @@
 package com.cuyer.rusthub.presentation.dashboard.calculators.crafting
 
 import android.app.Dialog
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -14,6 +16,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.cuyer.rusthub.R
+import com.cuyer.rusthub.data.local.entity.FiltersEntity
 import com.cuyer.rusthub.presentation.core.CoreViewModel
 import kotlinx.android.synthetic.main.fragment_crafting_filters_dialog.view.*
 
@@ -24,6 +27,7 @@ class CraftingFiltersDialog : DialogFragment() {
 
     private lateinit var toolbar: Toolbar
     private lateinit var autoCompleteTextView: AutoCompleteTextView
+    private var filtersList = listOf<FiltersEntity>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,14 +51,30 @@ class CraftingFiltersDialog : DialogFragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_crafting_filters_dialog, container, false)
 
-        viewModel.getItemsList.observe(viewLifecycleOwner) { itemsList ->
-            if (itemsList.isNotEmpty()) {
-                val typesList = itemsList.map { it.type }.toSet()
-                autoCompleteTextView = rootView.CraftingFilterType
-                val arrayAdapter = ArrayAdapter(requireContext(), R.layout.filter_dropdown_item, typesList.toTypedArray())
-                autoCompleteTextView.setAdapter(arrayAdapter)
+        viewModel.filtersList.observe(viewLifecycleOwner) {
+            if (!it.isNullOrEmpty()) {
+                filtersList = it
+                viewModel.getItemsList.observe(viewLifecycleOwner) { itemsList ->
+                    if (itemsList.isNotEmpty()) {
+                        val typesList = itemsList.map { it.type }.toSet()
+                        autoCompleteTextView = rootView.CraftingFilterType
+                        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.filter_dropdown_item, typesList.toTypedArray())
+                        autoCompleteTextView.setAdapter(arrayAdapter)
+                        autoCompleteTextView.setText(filtersList[0].name, false);
+                    }
+                }
+                } else {
+                viewModel.getItemsList.observe(viewLifecycleOwner) { itemsList ->
+                    if (itemsList.isNotEmpty()) {
+                        val typesList = itemsList.map { it.type }.toSet()
+                        autoCompleteTextView = rootView.CraftingFilterType
+                        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.filter_dropdown_item, typesList.toTypedArray())
+                        autoCompleteTextView.setAdapter(arrayAdapter)
+                    }
+                }
             }
-        }
+            }
+
 
 
 
@@ -70,7 +90,19 @@ class CraftingFiltersDialog : DialogFragment() {
         toolbar.title = "Filter"
         toolbar.inflateMenu(R.menu.crafting_filters_menu)
         toolbar.setOnMenuItemClickListener { item: MenuItem? ->
-            dismiss()
+            when(item?.itemId) {
+                R.id.action_delete -> {
+                    viewModel.deleteFilter()
+                    dismiss()
+                }
+                R.id.action_save -> {
+                    viewModel.setFilter(FiltersEntity(name = autoCompleteTextView.text.toString()))
+                    dismiss()
+                }
+                else -> {
+                    // Handle other items
+                }
+            }
             true
         }
     }

@@ -5,11 +5,13 @@ import androidx.room.Room
 import com.cuyer.rusthub.common.Constants
 import com.cuyer.rusthub.data.local.Converters
 import com.cuyer.rusthub.data.local.RustHubDatabase
+import com.cuyer.rusthub.data.local.repository.FiltersRepositoryImpl
 import com.cuyer.rusthub.data.remote.ItemsApi
 import com.cuyer.rusthub.data.remote.ServersApi
 import com.cuyer.rusthub.data.remote.repository.ItemsRepositoryImpl
 import com.cuyer.rusthub.data.remote.repository.ServersRepositoryImpl
 import com.cuyer.rusthub.data.util.GsonParser
+import com.cuyer.rusthub.domain.repository.filters.FiltersRepository
 import com.cuyer.rusthub.domain.repository.items.ItemsRepository
 import com.cuyer.rusthub.domain.repository.servers.ServersRepository
 import com.cuyer.rusthub.domain.use_case.get_items.GetItemsFromDbUseCase
@@ -86,5 +88,11 @@ object AppModule {
     @Singleton
     fun provideGetItemsFromDbUseCase(db: RustHubDatabase): GetItemsFromDbUseCase {
         return GetItemsFromDbUseCase(db.itemsDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFiltersRepository(db: RustHubDatabase): FiltersRepository {
+        return FiltersRepositoryImpl(db.filtersDao)
     }
 }
