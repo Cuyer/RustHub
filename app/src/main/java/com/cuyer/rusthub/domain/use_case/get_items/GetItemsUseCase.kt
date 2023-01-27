@@ -34,6 +34,5 @@ class GetItemsUseCase @Inject constructor(
                 emit(Resource.Error(e.message ?: "Couldn't reach server. Check your internet connection.", data = items))
             }
         }
-        emit(Resource.Success(data = items))
     }
 }

@@ -86,6 +86,7 @@ class CoreActivity : AppCompatActivity() {
 
 
         viewModel.getItemsState.observe(this){
+            Log.d("ErrorWatcher", "ItemsState: ${it.error}")
             if (it.isLoading && it.items.isEmpty()) {
                 topBar.visibility = View.GONE
                 fragmentContainer.visibility = View.GONE
@@ -98,7 +99,7 @@ class CoreActivity : AppCompatActivity() {
                 progressBar.visibility = View.GONE
                 topBar.visibility = View.GONE
                 fragmentContainer.visibility = View.GONE
-            } else {
+            } else if (it.error.isBlank()){
                 progressBar.visibility = View.GONE
                 message.visibility = View.GONE
                 topBar.visibility = View.VISIBLE
@@ -109,6 +110,7 @@ class CoreActivity : AppCompatActivity() {
         }
 
         viewModel.getServersState.observe(this){
+            Log.d("ErrorWatcher", "ServersState: ${it.error}")
             if (it.isLoading && it.servers.isEmpty()) {
                 topBar.visibility = View.GONE
                 fragmentContainer.visibility = View.GONE

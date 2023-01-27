@@ -37,6 +37,5 @@ class GetServersUseCase @Inject constructor(
                 )
             }
         }
-        emit(Resource.Success(data = servers))
     }
 }
