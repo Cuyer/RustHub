@@ -19,6 +19,9 @@ class GetServersUseCase @Inject constructor(
         emit(Resource.Loading())
         val servers = dao.getAllServers().map { it.toServers() }
         emit(Resource.Loading(data = servers))
+        if (servers.isNotEmpty()) {
+            emit(Resource.Success(data = servers))
+        }
         if (servers.isEmpty()) {
             try {
                 val remoteServers = repository.getServers()

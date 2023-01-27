@@ -19,6 +19,9 @@ class GetItemsUseCase @Inject constructor(
         emit(Resource.Loading())
         val items = dao.getAllItems().map { it.toItems() }
         emit(Resource.Loading(data = items))
+        if (items.isNotEmpty()) {
+            emit(Resource.Success(data = items))
+        }
         if (items.isEmpty()) {
             try {
                 val remoteItems = repository.getItems()
