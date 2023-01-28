@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.cuyer.rusthub.R
 import com.cuyer.rusthub.data.remote.dto.items.Ingredient
@@ -21,6 +22,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.crafting_list_recyclerview_expanded.view.*
 import kotlinx.android.synthetic.main.footer_layout.view.*
 import kotlinx.android.synthetic.main.fragment_crafting.*
+import java.time.Duration
 
 class CraftingExpandableListAdapter(
     private val craftingExpandableList: List<Ingredient>,
@@ -103,18 +105,21 @@ class CraftingExpandableListAdapter(
                 val slideUpAnimation = AnimationUtils.loadAnimation(mContext, R.anim.slide_up)
                 val slideDownAnimation = AnimationUtils.loadAnimation(mContext, R.anim.slide_down)
                 val ingredientList = mutableListOf<Ingredient>()
-
-                for (i in craftingExpandableList.indices) {
-                    ingredientList.add(
-                        Ingredient(
-                            href = craftingExpandableList[i].href,
-                            title = craftingExpandableList[i].title,
-                            value = craftingExpandableList[i].value
+                if (editText.text.toString() == "") {
+                    Toast.makeText(mContext, "In order to add item to the list, amount to craft can't be empty", Toast.LENGTH_SHORT).show()
+                } else {
+                    for (i in craftingExpandableList.indices) {
+                        ingredientList.add(
+                            Ingredient(
+                                href = craftingExpandableList[i].href,
+                                title = craftingExpandableList[i].title,
+                                value = craftingExpandableList[i].value
+                            )
                         )
-                    )
+                    }
+                    val craftingItems = CraftingItems(mainIcon = currentImage, amount = editText.text.toString(), ingredientList)
+                    CraftingDataHolder.addData(craftingItems)
                 }
-                val craftingItems = CraftingItems(mainIcon = currentImage, amount = editText.text.toString(), ingredientList)
-                CraftingDataHolder.addData(craftingItems)
 
                 val activity = mContext as CoreActivity
                 if (CraftingDataHolder.getData().isNotEmpty() && activity.CraftingViewDetails.visibility == View.GONE) {
