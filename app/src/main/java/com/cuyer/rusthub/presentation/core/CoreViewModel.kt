@@ -35,6 +35,12 @@ class CoreViewModel @Inject constructor(
     var filtersList: LiveData<List<FiltersEntity>>
 
 
+    private var selectedItemPosition: Int = -1
+    fun setSelectedItemPosition(position: Int) {
+        selectedItemPosition = position
+    }
+    fun getSelectedItemPosition() = selectedItemPosition
+
     private val _craftingItemsList = MutableLiveData<List<CraftingItems>>()
     val craftingItemsList: LiveData<List<CraftingItems>>
         get() = _craftingItemsList
