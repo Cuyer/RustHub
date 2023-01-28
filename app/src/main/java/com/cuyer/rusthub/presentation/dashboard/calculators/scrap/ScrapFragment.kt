@@ -75,7 +75,7 @@ class ScrapFragment : Fragment(), ScrapImageAdapter.OnImageClickListener {
                 scrapAdapter.updateList(filteredList)
 
                 if (viewModel.getSelectedItemPosition() != -1) {
-                    val selectedImageUrl = scrapableItemsList[viewModel.getSelectedItemPosition()].image
+                    val selectedImageUrl = if(viewModel.searchValue.value!!.isNotEmpty()) filteredList[viewModel.getSelectedItemPosition()].image else scrapableItemsList[viewModel.getSelectedItemPosition()].image
                     scrapRecyclerView.scrollToPosition(viewModel.getSelectedItemPosition())
                     Picasso.get()
                         .load(selectedImageUrl)
