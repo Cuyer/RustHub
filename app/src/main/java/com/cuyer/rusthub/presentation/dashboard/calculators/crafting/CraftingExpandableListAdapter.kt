@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -123,6 +124,8 @@ class CraftingExpandableListAdapter(
                     activity.CraftingViewDetails.visibility = View.GONE
                     activity.CraftingViewDetails.startAnimation(slideDownAnimation)
                 }
+                val imm = mContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
             }
         }
     }
