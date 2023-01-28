@@ -6,16 +6,52 @@
     android:layout_height="match_parent"
     tools:context=".presentation.dashboard.calculators.scrap.ScrapFragment">
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ScrapSearchLayout"
+        style="@style/SearchBarStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:focusable="true"
+        android:hint="@string/search_hint"
+        android:imeOptions="actionDone"
+        android:textColorHint="@color/text_night"
+        app:boxBackgroundColor="@color/widget_night"
+        app:boxBackgroundMode="outline"
+        app:hintTextColor="@color/text_night"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ScrapSearchEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/poppins"
+            android:inputType="text"
+            android:maxLines="1"
+            android:nextFocusLeft="@id/SearchEdit"
+            android:nextFocusUp="@id/SearchEdit"
+            android:textColor="@color/text_night"
+            android:textCursorDrawable="@null" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/SelectedImageContainer"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:background="@color/widget_night"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/ScrapSearchLayout">
 
         <ImageView
             android:id="@+id/ScrapSelectedImage"

@@ -9,7 +9,7 @@ import com.cuyer.rusthub.domain.model.Items
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.scrap_viewpager_item.view.*
 
-class ScrapImageAdapter(private val images: List<Items>, private val listener: OnImageClickListener?):  RecyclerView.Adapter<ScrapImageAdapter.ViewHolder>() {
+class ScrapImageAdapter(private var images: List<Items>, private val listener: OnImageClickListener?):  RecyclerView.Adapter<ScrapImageAdapter.ViewHolder>() {
 
     inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
@@ -34,6 +34,11 @@ class ScrapImageAdapter(private val images: List<Items>, private val listener: O
             .placeholder(R.drawable.ic_placeholder_image)
             .error(R.drawable.ic_missing_icon)
             .into(imageView)
+    }
+
+    fun updateList(filteredList: List<Items>) {
+        images = filteredList
+        notifyDataSetChanged()
     }
 
     interface OnImageClickListener {
