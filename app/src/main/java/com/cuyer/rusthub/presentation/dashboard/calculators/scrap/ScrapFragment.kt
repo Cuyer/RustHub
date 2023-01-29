@@ -51,7 +51,7 @@ class ScrapFragment : Fragment(), ScrapImageAdapter.OnImageClickListener {
         viewModel.getItemsList.observe(viewLifecycleOwner) { itemsList ->
             if (itemsList.isNotEmpty()) {
                 val scrapableItemsList = itemsList.filter { it.scrappedComponents[0].scrap.isNotEmpty()}
-                scrapAdapter = ScrapImageAdapter(scrapableItemsList, this)
+                scrapAdapter = ScrapImageAdapter(scrapableItemsList, this, context)
 
                 searchEditText.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {

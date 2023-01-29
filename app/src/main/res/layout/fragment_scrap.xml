@@ -6,6 +6,163 @@
     android:layout_height="match_parent"
     tools:context=".presentation.dashboard.calculators.scrap.ScrapFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ScrapSearchLayout">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ScrapAmountsRecyclerView">
+
+                <Button
+                    android:id="@+id/ScrapTrashButton"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:backgroundTint="@color/text_night"
+                    android:src="@drawable/ic_trash"
+                    app:cornerRadius="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/ScrapAddButton"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ScrapTrashIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_trash"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/ScrapTrashButton"
+                    app:layout_constraintStart_toStartOf="@+id/ScrapTrashButton"
+                    app:layout_constraintTop_toTopOf="@+id/ScrapTrashButton" />
+
+                <Button
+                    android:id="@+id/ScrapAddButton"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:backgroundTint="@color/rusthub_orange"
+                    android:text="@string/add"
+                    android:textColor="@color/text_night"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_medium"
+                    app:cornerRadius="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_weight="2"
+                    app:layout_constraintStart_toEndOf="@+id/ScrapTrashButton"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ScrapAmountsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ScrapLinearLayout" />
+
+            <LinearLayout
+                android:id="@+id/ScrapLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ScrapRecyclerView">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ScrapInputLayout"
+                    style="@style/SearchBarStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:focusable="true"
+                    android:hint="@string/enter_amount"
+                    android:imeOptions="actionDone"
+                    android:textColorHint="@color/text_night"
+                    app:boxBackgroundColor="#252525"
+                    app:boxBackgroundMode="outline"
+                    app:hintTextColor="@color/text_night">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ScrapEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:inputType="number"
+                        android:fontFamily="@font/poppins"
+                        android:maxLines="1"
+                        android:nextFocusLeft="@id/footerEditText"
+                        android:nextFocusUp="@id/footerEditText"
+                        android:textColor="@color/text_night"
+                        android:textCursorDrawable="@null"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ScrapRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/SelectedImageContainer" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/SelectedImageContainer"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@color/widget_night"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/ScrapSelectedImage"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:alpha="0.5"
+                    app:layout_constraintBottom_toBottomOf="@id/SelectedImageContainer"
+                    app:layout_constraintEnd_toEndOf="@id/SelectedImageContainer"
+                    app:layout_constraintStart_toStartOf="@id/SelectedImageContainer"
+                    app:layout_constraintTop_toTopOf="@id/SelectedImageContainer" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/ScrapSearchLayout"
         style="@style/SearchBarStyle"
@@ -31,49 +188,14 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_search"
             android:drawablePadding="10dp"
-            android:fontFamily="@font/poppins"
             android:inputType="text"
             android:maxLines="1"
+            android:fontFamily="@font/poppins"
             android:nextFocusLeft="@id/SearchEdit"
             android:nextFocusUp="@id/SearchEdit"
             android:textColor="@color/text_night"
             android:textCursorDrawable="@null" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/SelectedImageContainer"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="@color/widget_night"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ScrapSearchLayout">
-
-        <ImageView
-            android:id="@+id/ScrapSelectedImage"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:alpha="0.5"
-            app:layout_constraintBottom_toBottomOf="@id/SelectedImageContainer"
-            app:layout_constraintEnd_toEndOf="@id/SelectedImageContainer"
-            app:layout_constraintStart_toStartOf="@id/SelectedImageContainer"
-            app:layout_constraintTop_toTopOf="@id/SelectedImageContainer" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/ScrapRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:layout_marginStart="20dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SelectedImageContainer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
