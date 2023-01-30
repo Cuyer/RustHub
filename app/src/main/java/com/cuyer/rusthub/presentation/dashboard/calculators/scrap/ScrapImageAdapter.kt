@@ -38,15 +38,18 @@ class ScrapImageAdapter(private var images: List<Items>, private val listener: O
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         if (!isAdapterSet) {
             holder.scrapDetails.layoutManager = LinearLayoutManager(mContext)
-            holder.scrapDetails.adapter = ScrapAmountsAdapter(images[holder.adapterPosition].scrappedComponents[0].scrap)
+            holder.scrapDetails.adapter = ScrapAmountsAdapter(images[holder.adapterPosition].scrappedComponents[0].scrap, images[position].image, mContext)
             isAdapterSet = true
         }
+
         val imageView = holder.view.ScrapViewPagerImageView
         holder.view.setOnClickListener {
             listener?.onImageClick(images[position].image, position)
             (holder.scrapDetails.adapter as ScrapAmountsAdapter).updateList(images[position].scrappedComponents[0].scrap)
+            (holder.scrapDetails.adapter as ScrapAmountsAdapter).updateImage(images[position].image)
         }
         Picasso.get()
             .load(images[position].image)
