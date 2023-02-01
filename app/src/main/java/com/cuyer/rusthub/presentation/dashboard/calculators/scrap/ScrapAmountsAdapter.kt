@@ -2,6 +2,7 @@ package com.cuyer.rusthub.presentation.dashboard.calculators.scrap
 
 import android.content.Context
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
@@ -99,7 +100,7 @@ class ScrapAmountsAdapter(
             val slideUpAnimation = AnimationUtils.loadAnimation(mContext, R.anim.slide_up)
             val slideDownAnimation = AnimationUtils.loadAnimation(mContext, R.anim.slide_down)
             val scrapList = mutableListOf<Scrap>()
-            if (editText.text.toString() == "") {
+            if (TextUtils.isEmpty(editText.text)) {
                 Toast.makeText(mContext, "In order to add item to the list, amount to scrap can't be empty", Toast.LENGTH_SHORT).show()
             } else {
                 for (i in scrapAmountsList.indices) {
@@ -111,10 +112,10 @@ class ScrapAmountsAdapter(
                         )
                     )
                 }
+                val scrapItems = ScrapItems(mainIcon = currentImage, amount = editText.text.toString(), scrapList)
+                ScrapDataHolder.addData(scrapItems)
+                notifyDataSetChanged()
             }
-            val scrapItems = ScrapItems(mainIcon = currentImage, amount = editText.text.toString(), scrapList)
-            ScrapDataHolder.addData(scrapItems)
-            notifyDataSetChanged()
         }
         holder.scrapOutput.layoutManager = LinearLayoutManager(mContext)
         holder.scrapOutput.adapter = adapter
