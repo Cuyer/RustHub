@@ -1,5 +1,7 @@
 package com.cuyer.rusthub.presentation.dashboard.calculators.scrap
 
+import com.cuyer.rusthub.data.remote.dto.items.Ingredient
+import com.cuyer.rusthub.data.remote.dto.items.Scrap
 import com.cuyer.rusthub.domain.model.CraftingItems
 
 class ScrapDataHolder {
@@ -11,7 +13,15 @@ class ScrapDataHolder {
         }
 
         fun getData(): List<ScrapItems> {
-            return dataList.toList() // return a copy of the list instead of the original
+            return dataList.groupBy { it.mainIcon }
+                .map { (mainIcon, group) ->
+                    val scraps = group.flatMap { it.scrap }
+                        .groupBy { it.src }
+                        .map { (src, scrapGroup) ->
+                            Scrap(scrapGroup.first().name, src, scrapGroup.sumByDouble { it.amount.toDouble() }.toString())
+                        }
+                    ScrapItems(mainIcon, group.sumByDouble { it.amount.toDouble() }.toString(), scraps)
+                }.toMutableList()
         }
 
         fun removeData(){

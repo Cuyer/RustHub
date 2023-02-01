@@ -84,6 +84,7 @@ class ScrapAmountsAdapter(
                     for (i in scrapAmountsList.indices) {
                         val newValue = (enteredValue * holder.originalValues[i]).toString()
                         scrapAmountsList[i].amount = newValue
+                        notifyDataSetChanged()
                     }
                 } else {
                     for (i in scrapAmountsList.indices) {
@@ -91,7 +92,6 @@ class ScrapAmountsAdapter(
                         notifyDataSetChanged()
                     }
                 }
-                notifyDataSetChanged()
             }
 
         })
@@ -112,16 +112,15 @@ class ScrapAmountsAdapter(
                             amount = scrapAmountsList[i].amount
                         )
                     )
-                    val scrapItems = ScrapItems(mainIcon = currentImage, amount = editText.text.toString(), scrapList)
-                    ScrapDataHolder.addData(scrapItems)
                 }
             }
-            holder.scrapOutput.layoutManager = LinearLayoutManager(mContext)
-            holder.scrapOutput.adapter = ScrapOutputAdapter(ScrapDataHolder.getData())
+            val scrapItems = ScrapItems(mainIcon = currentImage, amount = editText.text.toString(), scrapList)
+            ScrapDataHolder.addData(scrapItems)
+            Log.d("ScrapItems", "${ScrapDataHolder.getData()}")
             notifyDataSetChanged()
         }
         holder.scrapOutput.layoutManager = LinearLayoutManager(mContext)
-        holder.scrapOutput.adapter = ScrapOutputAdapter(ScrapDataHolder.getData())
+        holder.scrapOutput.adapter = ScrapOutputAdapter(ScrapDataHolder.getData(), mContext)
 
         holder.name.text = scrapAmountsList[position].name
         holder.amount.text = scrapAmountsList[position].amount
