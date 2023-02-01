@@ -16,18 +16,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cuyer.rusthub.R
-import com.cuyer.rusthub.data.remote.dto.items.Ingredient
 import com.cuyer.rusthub.data.remote.dto.items.Scrap
-import com.cuyer.rusthub.data.remote.dto.items.ScrappedComponents
-import com.cuyer.rusthub.domain.model.CraftingItems
-import com.cuyer.rusthub.presentation.dashboard.calculators.crafting.CraftingDataHolder
 import com.google.android.material.textfield.TextInputEditText
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_scrap.view.*
 import kotlinx.android.synthetic.main.scrap_amount_recyclerview_item.view.*
 
 class ScrapAmountsAdapter(
-    private var scrapAmountsList: List<Scrap>,
+    private var scrapAmountsList: MutableList<Scrap>,
     private var currentImage: String,
     context: Context?)
     : RecyclerView.Adapter<ScrapAmountsAdapter.ViewHolder>() {
@@ -65,7 +60,7 @@ class ScrapAmountsAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val activity = mContext as AppCompatActivity
         val editText = activity.findViewById<TextInputEditText>(R.id.ScrapEditText)
-
+        val adapter = ScrapOutputAdapter(ScrapDataHolder.getData().toMutableList(), mContext)
         for (i in scrapAmountsList.indices) {
             holder.originalValues.add(scrapAmountsList[i].amount.toDouble())
         }
@@ -96,6 +91,9 @@ class ScrapAmountsAdapter(
 
         })
 
+        holder.deleteButton.setOnClickListener{
+            adapter.removeItems()
+        }
 
         holder.addButton.setOnClickListener{
             val slideUpAnimation = AnimationUtils.loadAnimation(mContext, R.anim.slide_up)
@@ -116,11 +114,10 @@ class ScrapAmountsAdapter(
             }
             val scrapItems = ScrapItems(mainIcon = currentImage, amount = editText.text.toString(), scrapList)
             ScrapDataHolder.addData(scrapItems)
-            Log.d("ScrapItems", "${ScrapDataHolder.getData()}")
             notifyDataSetChanged()
         }
         holder.scrapOutput.layoutManager = LinearLayoutManager(mContext)
-        holder.scrapOutput.adapter = ScrapOutputAdapter(ScrapDataHolder.getData(), mContext)
+        holder.scrapOutput.adapter = adapter
 
         holder.name.text = scrapAmountsList[position].name
         holder.amount.text = scrapAmountsList[position].amount
@@ -135,7 +132,7 @@ class ScrapAmountsAdapter(
         this.currentImage = image
         notifyDataSetChanged()
     }
-    fun updateList(scrapAmountsList: List<Scrap>) {
+    fun updateList(scrapAmountsList: MutableList<Scrap>) {
         this.scrapAmountsList = scrapAmountsList
         notifyDataSetChanged()
     }
