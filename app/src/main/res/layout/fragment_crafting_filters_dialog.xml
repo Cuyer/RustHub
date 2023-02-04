@@ -58,7 +58,7 @@
                 android:inputType="none"
                 android:fontFamily="@font/poppins"
                 android:textColor="@color/text_night"
-                android:popupBackground="#991C1B1F"
+                android:popupBackground="#202020"
                 android:textCursorDrawable="@null" />
 
         </com.google.android.material.textfield.TextInputLayout>
