@@ -6,13 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cuyer.rusthub.common.Resource
 import com.cuyer.rusthub.data.local.entity.FiltersEntity
-import com.cuyer.rusthub.domain.model.CraftingItems
-import com.cuyer.rusthub.domain.model.Items
-import com.cuyer.rusthub.domain.model.ItemsState
-import com.cuyer.rusthub.domain.model.ServersState
+import com.cuyer.rusthub.domain.model.*
 import com.cuyer.rusthub.domain.repository.filters.FiltersRepository
 import com.cuyer.rusthub.domain.use_case.get_items.GetItemsFromDbUseCase
 import com.cuyer.rusthub.domain.use_case.get_items.GetItemsUseCase
+import com.cuyer.rusthub.domain.use_case.get_servers.GetServersFromDbUseCase
 import com.cuyer.rusthub.domain.use_case.get_servers.GetServersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +25,8 @@ class CoreViewModel @Inject constructor(
     private val getItemsUseCase: GetItemsUseCase,
     private val getServersUseCase: GetServersUseCase,
     private val getItemsFromDbUseCase: GetItemsFromDbUseCase,
-    private val filtersRepository: FiltersRepository): ViewModel() {
+    private val filtersRepository: FiltersRepository,
+    private val getServersFromDbUseCase: GetServersFromDbUseCase): ViewModel() {
 
     var scrollPosition: Int = 0
 
@@ -64,6 +63,10 @@ class CoreViewModel @Inject constructor(
     private val _getItemsList = MutableLiveData<List<Items>>()
     val getItemsList: LiveData<List<Items>>
         get() = _getItemsList
+
+    private val _getServersList = MutableLiveData<List<Servers>>()
+    val getServersList: LiveData<List<Servers>>
+        get() = _getServersList
 
     private val _searchValue = MutableLiveData<String>()
     val searchValue: LiveData<String> = _searchValue
@@ -122,7 +125,47 @@ class CoreViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun getServers() {
+    fun getServersFromDb() {
+        getServersFromDbUseCase().onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _getServersList.value = result.data ?: emptyList()
+                }
+                is Resource.Error -> {
+
+                }
+                is Resource.Loading -> {
+
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun getServersAfterRefresh() {
+        getServersUseCase().onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _getServersState.value = ServersState(
+                        isLoading = false,
+                        servers = result.data ?: emptyList()
+                    )
+                }
+                is Resource.Error -> {
+                    _getServersState.value = ServersState(
+                        isLoading = false,
+                        error = result.message ?: "An unexpected error occured"
+                    )
+                }
+                is Resource.Loading -> {
+                    _getServersState.value = ServersState(
+                        isLoading = true
+                    )
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+     private fun getServers() {
         getServersUseCase().onEach { result ->
             when (result) {
                 is Resource.Success -> {

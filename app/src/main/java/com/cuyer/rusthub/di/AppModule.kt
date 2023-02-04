@@ -16,6 +16,7 @@ import com.cuyer.rusthub.domain.repository.items.ItemsRepository
 import com.cuyer.rusthub.domain.repository.servers.ServersRepository
 import com.cuyer.rusthub.domain.use_case.get_items.GetItemsFromDbUseCase
 import com.cuyer.rusthub.domain.use_case.get_items.GetItemsUseCase
+import com.cuyer.rusthub.domain.use_case.get_servers.GetServersFromDbUseCase
 import com.cuyer.rusthub.domain.use_case.get_servers.GetServersUseCase
 import com.google.gson.Gson
 import dagger.Module
@@ -94,5 +95,11 @@ object AppModule {
     @Singleton
     fun provideFiltersRepository(db: RustHubDatabase): FiltersRepository {
         return FiltersRepositoryImpl(db.filtersDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetServersFromDbUseCase(db: RustHubDatabase): GetServersFromDbUseCase {
+        return GetServersFromDbUseCase(db.serversDao)
     }
 }
