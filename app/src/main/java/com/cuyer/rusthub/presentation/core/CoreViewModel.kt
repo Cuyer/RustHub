@@ -6,14 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cuyer.rusthub.common.Resource
 import com.cuyer.rusthub.data.local.entity.FiltersEntity
+import com.cuyer.rusthub.data.local.entity.ServersFiltersEntity
 import com.cuyer.rusthub.domain.model.*
 import com.cuyer.rusthub.domain.repository.filters.FiltersRepository
+import com.cuyer.rusthub.domain.repository.filters.ServersFiltersRepository
 import com.cuyer.rusthub.domain.use_case.get_items.GetItemsFromDbUseCase
 import com.cuyer.rusthub.domain.use_case.get_items.GetItemsUseCase
 import com.cuyer.rusthub.domain.use_case.get_servers.GetServersFromDbUseCase
 import com.cuyer.rusthub.domain.use_case.get_servers.GetServersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -26,13 +27,14 @@ class CoreViewModel @Inject constructor(
     private val getServersUseCase: GetServersUseCase,
     private val getItemsFromDbUseCase: GetItemsFromDbUseCase,
     private val filtersRepository: FiltersRepository,
+    private val serversFiltersRepository: ServersFiltersRepository,
     private val getServersFromDbUseCase: GetServersFromDbUseCase): ViewModel() {
 
     var scrollPosition: Int = 0
 
 
     var filtersList: LiveData<List<FiltersEntity>>
-
+    var serversFiltersList: LiveData<List<ServersFiltersEntity>>
 
     private var selectedItemPosition: Int = -1
     fun setSelectedItemPosition(position: Int) {
@@ -71,9 +73,15 @@ class CoreViewModel @Inject constructor(
     private val _searchValue = MutableLiveData<String>()
     val searchValue: LiveData<String> = _searchValue
 
+    private val _serversSearchValue = MutableLiveData<String>()
+    val serversSearchValue: LiveData<String> = _serversSearchValue
 
     fun setSearchValue(value: String) {
         _searchValue.value = value
+    }
+
+    fun setServersSearchValue(value: String) {
+        _serversSearchValue.value = value
     }
 
     fun setCraftingItemsList(craftingItems: List<CraftingItems>) {
@@ -84,6 +92,7 @@ class CoreViewModel @Inject constructor(
         runBlocking {
             getServers()
             filtersList = filtersRepository.getAll()
+            serversFiltersList = serversFiltersRepository.getAll()
         }
     }
 
@@ -98,6 +107,20 @@ class CoreViewModel @Inject constructor(
     fun deleteFilter() {
         viewModelScope.launch {
             filtersRepository.delete()
+        }
+    }
+
+    fun setServersFilter(filter: ServersFiltersEntity) {
+        viewModelScope.launch {
+            serversFiltersRepository.delete()
+            serversFiltersRepository.insert(filter)
+        }
+    }
+
+
+    fun deleteServersFilter() {
+        viewModelScope.launch {
+            serversFiltersRepository.delete()
         }
     }
 

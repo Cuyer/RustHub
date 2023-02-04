@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.calculators_list_recyclerview.view.*
 import kotlinx.android.synthetic.main.servers_list_recyclerview.view.*
 
 class ServersListAdapter(
-    private val serversList: List<Servers>,
+    private var serversList: List<Servers>,
     private val context: Context?): RecyclerView.Adapter<ServersListAdapter.ViewHolder>() {
 
     private val mContext = context
@@ -85,5 +85,10 @@ class ServersListAdapter(
             serverDetails.layoutManager = GridLayoutManager(mContext, 3)
             serverDetails.adapter = ServerDetailsAdapter(serversList, labelsList, position, mContext)
         }
+    }
+
+    fun updateList(filteredList: List<Servers>) {
+        serversList = filteredList
+        notifyDataSetChanged()
     }
 }
