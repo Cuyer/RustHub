@@ -82,12 +82,19 @@ class CoreViewModel @Inject constructor(
     private val _serversSearchValue = MutableLiveData<String>()
     val serversSearchValue: LiveData<String> = _serversSearchValue
 
+    private val _scrapSearchValue = MutableLiveData<String>()
+    val scrapSearchValue: LiveData<String> = _scrapSearchValue
+
     fun setSearchValue(value: String) {
         _searchValue.value = value
     }
 
     fun setServersSearchValue(value: String) {
         _serversSearchValue.value = value
+    }
+
+    fun setScrapSearchValue(value: String) {
+        _scrapSearchValue.value = value
     }
 
     fun setCraftingItemsList(craftingItems: List<CraftingItems>) {

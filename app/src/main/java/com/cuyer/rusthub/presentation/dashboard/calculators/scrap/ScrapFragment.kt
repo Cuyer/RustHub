@@ -59,7 +59,7 @@ class ScrapFragment : Fragment(), ScrapImageAdapter.OnImageClickListener {
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                         val filteredList = scrapableItemsList.filter { it.scrappedComponents[0]
                             .item.contains(s.toString(), ignoreCase = true) }
-                        viewModel.setSearchValue(s.toString())
+                        viewModel.setScrapSearchValue(s.toString())
                         scrapAdapter.updateList(filteredList)
                     }
                     override fun afterTextChanged(p0: Editable?) {
@@ -70,12 +70,12 @@ class ScrapFragment : Fragment(), ScrapImageAdapter.OnImageClickListener {
                 scrapRecyclerView.layoutManager = layoutManager
                 layoutManager.scrollToPosition(viewModel.getSelectedItemPosition())
                 scrapRecyclerView.adapter = scrapAdapter
-                searchEditText.setText(viewModel.searchValue.value)
-                val filteredList = scrapableItemsList.filter { it.scrappedComponents[0].item.contains(viewModel.searchValue.value.toString(), ignoreCase = true) }
+                searchEditText.setText(viewModel.scrapSearchValue.value)
+                val filteredList = scrapableItemsList.filter { it.scrappedComponents[0].item.contains(viewModel.scrapSearchValue.value.toString(), ignoreCase = true) }
                 scrapAdapter.updateList(filteredList)
 
                 if (viewModel.getSelectedItemPosition() != -1) {
-                    val selectedImageUrl = if(viewModel.searchValue.value!!.isNotEmpty()) filteredList[viewModel.getSelectedItemPosition()].image else scrapableItemsList[viewModel.getSelectedItemPosition()].image
+                    val selectedImageUrl = if(viewModel.scrapSearchValue.value!!.isNotEmpty()) filteredList[viewModel.getSelectedItemPosition()].image else scrapableItemsList[viewModel.getSelectedItemPosition()].image
                     scrapRecyclerView.scrollToPosition(viewModel.getSelectedItemPosition())
                     Picasso.get()
                         .load(selectedImageUrl)
