@@ -3,6 +3,7 @@ package com.cuyer.rusthub.presentation.dashboard.servers
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import com.cuyer.rusthub.presentation.core.CoreViewModel
 import com.cuyer.rusthub.presentation.dashboard.DashboardFragment
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_crafting.view.*
+import kotlinx.android.synthetic.main.fragment_servers.*
 import kotlinx.android.synthetic.main.fragment_servers.view.*
 
 class ServersFragment : Fragment() {
@@ -33,6 +35,7 @@ class ServersFragment : Fragment() {
     private lateinit var searchEditText: TextInputEditText
     private var onBackPressedCalled = false
     private var filtersList = listOf<ServersFiltersEntity>()
+    private var isInitialized = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +51,16 @@ class ServersFragment : Fragment() {
         swipeRefreshLayout = rootView.SwipeToRefresh
         filtersImageView = rootView.ServersFilterIcon
         searchEditText = rootView.ServersSearchEdit
+
+        swipeRefreshLayout.setOnRefreshListener {
+            getServers()
+            viewModel.getServersRefreshState.observe(viewLifecycleOwner) {
+                when (it.isLoading) {
+                    true -> showLoadingView(it.error)
+                    false -> showContentView(it.servers)
+                }
+            }
+        }
 
         filtersImageView.setOnClickListener {
             val serversFiltersDialog = ServersFiltersDialog()
@@ -94,6 +107,7 @@ class ServersFragment : Fragment() {
 
                         adapter = ServersListAdapter(serversList, context)
                         recyclerView.adapter = adapter
+                        isInitialized = true
 
                         searchEditText.setText(viewModel.serversSearchValue.value)
                         val filteredList = filteredItemsList.filter {
@@ -141,6 +155,7 @@ class ServersFragment : Fragment() {
 
                         adapter = ServersListAdapter(serversList, context)
                         recyclerView.adapter = adapter
+                        isInitialized = true
 
                         searchEditText.setText(viewModel.serversSearchValue.value)
                         val filteredList = serversList.filter {
@@ -165,6 +180,39 @@ class ServersFragment : Fragment() {
         }
 
         return rootView
+    }
+
+    private fun showLoadingView(errorMessage: String) {
+        if (errorMessage.isBlank()) {
+            ServersRecyclerView.visibility = View.GONE
+            ServersErrorInfo.visibility = View.GONE
+        } else {
+            showErrorView()
+        }
+    }
+
+    private fun showContentView(serversList: List<Servers>) {
+        if (serversList.isNotEmpty()) {
+            if (isInitialized) {
+                adapter.updateList(serversList)
+                swipeRefreshLayout.isRefreshing = false
+                ServersRecyclerView.visibility = View.VISIBLE
+                ServersErrorInfo.visibility = View.GONE
+            }
+        } else {
+            showErrorView()
+        }
+    }
+
+    private fun showErrorView() {
+        ServersErrorInfo.text = "There was error fetching servers, please check Your internet connection and try to refresh"
+        ServersErrorInfo.visibility = View.VISIBLE
+        swipeRefreshLayout.isRefreshing = false
+    }
+
+    private fun getServers() {
+        viewModel.getServersAfterRefresh()
+        viewModel.getServersFromDb()
     }
 
     private fun filterServers(serversList: List<Servers>, filtersList: List<ServersFiltersEntity>): List<Servers> {

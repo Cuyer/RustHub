@@ -18,6 +18,7 @@ import com.cuyer.rusthub.domain.repository.items.ItemsRepository
 import com.cuyer.rusthub.domain.repository.servers.ServersRepository
 import com.cuyer.rusthub.domain.use_case.get_items.GetItemsFromDbUseCase
 import com.cuyer.rusthub.domain.use_case.get_items.GetItemsUseCase
+import com.cuyer.rusthub.domain.use_case.get_servers.GetServersAfterRefresh
 import com.cuyer.rusthub.domain.use_case.get_servers.GetServersFromDbUseCase
 import com.cuyer.rusthub.domain.use_case.get_servers.GetServersUseCase
 import com.google.gson.Gson
@@ -91,6 +92,12 @@ object AppModule {
     @Singleton
     fun provideGetItemsFromDbUseCase(db: RustHubDatabase): GetItemsFromDbUseCase {
         return GetItemsFromDbUseCase(db.itemsDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetServersAfterRefresh(repository: ServersRepository, db: RustHubDatabase): GetServersAfterRefresh {
+        return GetServersAfterRefresh(repository, db.serversDao)
     }
 
     @Provides

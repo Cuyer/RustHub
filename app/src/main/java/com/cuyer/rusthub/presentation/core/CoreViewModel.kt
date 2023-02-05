@@ -12,6 +12,7 @@ import com.cuyer.rusthub.domain.repository.filters.FiltersRepository
 import com.cuyer.rusthub.domain.repository.filters.ServersFiltersRepository
 import com.cuyer.rusthub.domain.use_case.get_items.GetItemsFromDbUseCase
 import com.cuyer.rusthub.domain.use_case.get_items.GetItemsUseCase
+import com.cuyer.rusthub.domain.use_case.get_servers.GetServersAfterRefresh
 import com.cuyer.rusthub.domain.use_case.get_servers.GetServersFromDbUseCase
 import com.cuyer.rusthub.domain.use_case.get_servers.GetServersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +27,7 @@ class CoreViewModel @Inject constructor(
     private val getItemsUseCase: GetItemsUseCase,
     private val getServersUseCase: GetServersUseCase,
     private val getItemsFromDbUseCase: GetItemsFromDbUseCase,
+    private val getServersAfterRefresh: GetServersAfterRefresh,
     private val filtersRepository: FiltersRepository,
     private val serversFiltersRepository: ServersFiltersRepository,
     private val getServersFromDbUseCase: GetServersFromDbUseCase): ViewModel() {
@@ -53,6 +55,10 @@ class CoreViewModel @Inject constructor(
     private val _getServersState = MutableLiveData<ServersState>()
     val getServersState: LiveData<ServersState>
         get() = _getServersState
+
+    private val _getServersRefreshState = MutableLiveData<ServersRefreshState>()
+    val getServersRefreshState: LiveData<ServersRefreshState>
+        get() = _getServersRefreshState
 
     private val _currentFragmentTag = MutableLiveData<String>()
     val currentFragmentTag: LiveData<String>
@@ -165,22 +171,22 @@ class CoreViewModel @Inject constructor(
     }
 
     fun getServersAfterRefresh() {
-        getServersUseCase().onEach { result ->
+        getServersAfterRefresh.invoke().onEach { result ->
             when (result) {
                 is Resource.Success -> {
-                    _getServersState.value = ServersState(
+                    _getServersRefreshState.value = ServersRefreshState(
                         isLoading = false,
                         servers = result.data ?: emptyList()
                     )
                 }
                 is Resource.Error -> {
-                    _getServersState.value = ServersState(
+                    _getServersRefreshState.value = ServersRefreshState(
                         isLoading = false,
                         error = result.message ?: "An unexpected error occured"
                     )
                 }
                 is Resource.Loading -> {
-                    _getServersState.value = ServersState(
+                    _getServersRefreshState.value = ServersRefreshState(
                         isLoading = true
                     )
                 }
