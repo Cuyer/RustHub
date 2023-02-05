@@ -8,6 +8,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.DecelerateInterpolator
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -36,6 +37,7 @@ class CoreActivity : AppCompatActivity() {
     private lateinit var currentFragmentTag: String
     private lateinit var slideAnimation : Animation
     private lateinit var splashScreen: SplashScreen
+    private lateinit var retryButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         splashScreen = installSplashScreen()
@@ -47,6 +49,8 @@ class CoreActivity : AppCompatActivity() {
         message = CoreMessage
         fragmentContainer = FragmentContainer
         topBar = TopBar
+        retryButton = RetryButton
+
         slideAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_in_right)
 
 
@@ -63,6 +67,10 @@ class CoreActivity : AppCompatActivity() {
             }
 
             slideBack.start()
+        }
+
+        retryButton.setOnClickListener {
+            viewModel.getServers()
         }
 
         viewModel.currentFragmentTag.observe(this) { fragmentTag ->
@@ -88,18 +96,21 @@ class CoreActivity : AppCompatActivity() {
         viewModel.getItemsState.observe(this){
             Log.d("ErrorWatcher", "ItemsState: ${it.error}")
             if (it.isLoading && it.items.isEmpty()) {
+                retryButton.visibility = View.GONE
                 topBar.visibility = View.GONE
                 fragmentContainer.visibility = View.GONE
                 progressBar.visibility = View.VISIBLE
                 message.visibility = View.VISIBLE
                 message.text = getString(R.string.downloading_items)
             } else if (it.error.isNotBlank()){
+                retryButton.visibility = View.VISIBLE
                 message.text = getString(R.string.download_error)
                 message.gravity = Gravity.CENTER
                 progressBar.visibility = View.GONE
                 topBar.visibility = View.GONE
                 fragmentContainer.visibility = View.GONE
             } else if (it.error.isBlank()){
+                retryButton.visibility = View.GONE
                 progressBar.visibility = View.GONE
                 message.visibility = View.GONE
                 topBar.visibility = View.VISIBLE
@@ -112,12 +123,14 @@ class CoreActivity : AppCompatActivity() {
         viewModel.getServersState.observe(this){
             Log.d("ErrorWatcher", "ServersState: ${it.error}")
             if (it.isLoading && it.servers.isEmpty()) {
+                retryButton.visibility = View.GONE
                 topBar.visibility = View.GONE
                 fragmentContainer.visibility = View.GONE
                 progressBar.visibility = View.VISIBLE
                 message.visibility = View.VISIBLE
                 message.text = getString(R.string.downloading_servers)
             } else if (it.error.isNotBlank()){
+                retryButton.visibility = View.VISIBLE
                 message.text = getString(R.string.download_error)
                 message.gravity = Gravity.CENTER
                 progressBar.visibility = View.GONE

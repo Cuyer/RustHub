@@ -194,7 +194,7 @@ class CoreViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-     private fun getServers() {
+     fun getServers() {
         getServersUseCase().onEach { result ->
             when (result) {
                 is Resource.Success -> {

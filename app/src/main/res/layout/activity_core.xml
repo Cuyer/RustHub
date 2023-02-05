@@ -7,13 +7,29 @@
     android:layout_height="match_parent"
     tools:context=".presentation.core.CoreActivity">
 
+    <Button
+        android:id="@+id/RetryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:backgroundTint="#CE422B"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Retry"
+        android:textColor="@color/text_night"
+        android:textSize="15sp"
+        android:visibility="gone"
+        app:cornerRadius="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CoreMessage" />
 
     <ProgressBar
         android:id="@+id/CoreProgressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -27,7 +43,7 @@
         android:layout_marginTop="20dp"
         android:fontFamily="@font/poppins_medium"
         android:textColor="@color/text_night"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CoreProgressBar" />
