@@ -44,6 +44,12 @@ class CoreViewModel @Inject constructor(
     }
     fun getSelectedItemPosition() = selectedItemPosition
 
+    private var raidSelectedItemPosition: Int = -1
+    fun setRaidSelectedItemPosition(position: Int) {
+        raidSelectedItemPosition = position
+    }
+    fun getRaidSelectedItemPosition() = raidSelectedItemPosition
+
     private val _craftingItemsList = MutableLiveData<List<CraftingItems>>()
     val craftingItemsList: LiveData<List<CraftingItems>>
         get() = _craftingItemsList
