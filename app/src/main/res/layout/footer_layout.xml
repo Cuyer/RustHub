@@ -53,6 +53,8 @@
         android:fontFamily="@font/poppins_medium"
         android:text="@string/add"
         android:textSize="15sp"
+        android:insetBottom="0dp"
+        android:insetTop="0dp"
         app:cornerRadius="0dp" />
 
 </LinearLayout>
