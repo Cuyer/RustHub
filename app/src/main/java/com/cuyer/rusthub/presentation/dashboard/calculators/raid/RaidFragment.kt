@@ -39,7 +39,9 @@ class RaidFragment : Fragment() {
 
         viewModel.getItemsList.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
-                raidAdapter = RaidContainerAdapter(it, context, viewModel.getRaidSelectedItemPosition())
+                raidAdapter = RaidContainerAdapter(it, context, viewModel.getRaidSelectedItemPosition(),
+                    viewModel.getRaidInitialFilteredList(),
+                    viewModel.getSelectorPosition())
                 val layoutManager = LinearLayoutManager(context)
                 layoutManager.orientation = LinearLayoutManager.VERTICAL
                 recyclerView.layoutManager = layoutManager
@@ -47,6 +49,14 @@ class RaidFragment : Fragment() {
 
                 raidAdapter.selectedPosition.observe(viewLifecycleOwner) { position ->
                     viewModel.setRaidSelectedItemPosition(position)
+                }
+
+                raidAdapter.filteredInitialList.observe(viewLifecycleOwner) {list ->
+                    viewModel.setRaidInitialFilteredList(list)
+                }
+
+                raidAdapter.selectorPosition.observe(viewLifecycleOwner) {selectorPosition ->
+                    viewModel.setSelectorPosition(selectorPosition)
                 }
             }
         }

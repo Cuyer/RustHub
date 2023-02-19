@@ -50,6 +50,20 @@ class CoreViewModel @Inject constructor(
     }
     fun getRaidSelectedItemPosition() = raidSelectedItemPosition
 
+    private var raidInitialFilteredList = emptyList<Items>()
+    fun setRaidInitialFilteredList(list: List<Items>) {
+        raidInitialFilteredList = list
+    }
+
+    fun getRaidInitialFilteredList() = raidInitialFilteredList
+
+
+    private var selectorPosition: Int = 0
+    fun setSelectorPosition(position: Int) {
+        selectorPosition = position
+    }
+    fun getSelectorPosition() = selectorPosition
+
     private val _craftingItemsList = MutableLiveData<List<CraftingItems>>()
     val craftingItemsList: LiveData<List<CraftingItems>>
         get() = _craftingItemsList

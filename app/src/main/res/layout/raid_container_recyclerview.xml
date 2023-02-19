@@ -29,9 +29,91 @@
         app:layout_constraintTop_toBottomOf="@+id/RaidSpinner">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/SelectorLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/widget_night"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/LeftCategoryIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_left"
+                android:translationZ="90dp"
+                app:layout_constraintBottom_toBottomOf="@+id/RaidLeft"
+                app:layout_constraintEnd_toEndOf="@+id/RaidLeft"
+                app:layout_constraintStart_toStartOf="@+id/RaidLeft"
+                app:layout_constraintTop_toTopOf="@+id/RaidLeft" />
+
+            <ImageView
+                android:id="@+id/RightCategoryIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_right"
+                android:translationZ="90dp"
+                app:layout_constraintBottom_toBottomOf="@+id/RaidRight"
+                app:layout_constraintEnd_toEndOf="@+id/RaidRight"
+                app:layout_constraintStart_toStartOf="@+id/RaidRight"
+                app:layout_constraintTop_toTopOf="@+id/RaidRight" />
+
+            <Button
+                android:id="@+id/RaidLeft"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:backgroundTint="@color/text_night"
+                android:insetBottom="0dp"
+                android:insetTop="0dp"
+                app:cornerRadius="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/RaidCategoryText"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                tools:srcCompat="@drawable/ic_arrow_left" />
+
+            <TextView
+                android:id="@+id/RaidCategoryText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="@color/text_night"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/RaidRight"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/RaidLeft"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/RaidRight"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:backgroundTint="@color/text_night"
+                android:insetBottom="0dp"
+                android:insetTop="0dp"
+                app:cornerRadius="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/RaidCategoryText"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@drawable/ic_arrow_right" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/RaidExplosiveSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@color/widget_night"
             app:layout_constraintBottom_toBottomOf="@+id/RaidInputLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -39,9 +121,36 @@
             app:layout_constraintTop_toTopOf="@+id/RaidInputLayout">
 
             <ImageView
-                android:id="@+id/RaidExplosiveRight"
+                android:id="@+id/RightExplosiveIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_right"
+                android:translationZ="90dp"
+                app:layout_constraintBottom_toBottomOf="@+id/RaidExplosiveRight"
+                app:layout_constraintEnd_toEndOf="@+id/RaidExplosiveRight"
+                app:layout_constraintStart_toStartOf="@+id/RaidExplosiveRight"
+                app:layout_constraintTop_toTopOf="@+id/RaidExplosiveRight" />
+
+            <ImageView
+                android:id="@+id/LeftExplosiveIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_left"
+                android:translationZ="90dp"
+                app:layout_constraintBottom_toBottomOf="@+id/RaidExplosiveLeft"
+                app:layout_constraintEnd_toEndOf="@+id/RaidExplosiveLeft"
+                app:layout_constraintStart_toStartOf="@+id/RaidExplosiveLeft"
+                app:layout_constraintTop_toTopOf="@+id/RaidExplosiveLeft" />
+
+            <Button
+                android:id="@+id/RaidExplosiveRight"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="20dp"
+                android:backgroundTint="@color/text_night"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:cornerRadius="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/RaidExplosiveImage"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -49,10 +158,15 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_arrow_right" />
 
-            <ImageView
+            <Button
                 android:id="@+id/RaidExplosiveLeft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="20dp"
+                android:backgroundTint="@color/text_night"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:cornerRadius="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/RaidExplosiveImage"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -63,8 +177,8 @@
 
             <ImageView
                 android:id="@+id/RaidExplosiveImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/RaidExplosiveRight"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -77,6 +191,7 @@
             style="@style/SearchBarStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:layout_weight="4"
             android:focusable="true"
             android:hint="@string/enter_amount"
@@ -88,7 +203,7 @@
             app:layout_constraintEnd_toStartOf="@+id/RaidExplosiveSelector"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/RaidCategoryText">
+            app:layout_constraintTop_toBottomOf="@+id/SelectorLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/RaidEditText"
@@ -104,36 +219,6 @@
                 android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageView
-            android:id="@+id/RaidLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/RaidCategoryText"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/ic_arrow_left" />
-
-        <ImageView
-            android:id="@+id/RaidRight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/RaidCategoryText"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/ic_arrow_right" />
-
-        <TextView
-            android:id="@+id/RaidCategoryText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            app:layout_constraintEnd_toStartOf="@+id/RaidRight"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/RaidLeft"
-            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -191,7 +276,8 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:backgroundTint="@color/text_night"
-            android:src="@drawable/ic_trash"
+            android:insetBottom="0dp"
+            android:insetTop="0dp"
             app:cornerRadius="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/RaidAddButton"
@@ -219,6 +305,8 @@
             android:text="@string/add"
             android:textColor="@color/text_night"
             android:textSize="15sp"
+            android:insetBottom="0dp"
+            android:insetTop="0dp"
             app:cornerRadius="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

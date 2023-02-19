@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.raid_container_recyclerview.*
 import kotlinx.android.synthetic.main.raid_container_recyclerview.view.*
 import kotlinx.android.synthetic.main.raid_spinner_item.view.*
+import okhttp3.internal.notify
 
 class RaidSpinnerAdapter(
     private var itemsList: List<Items>,
@@ -72,6 +73,11 @@ class RaidSpinnerAdapter(
             layoutManager.recycleChildrenOnDetach = true
             recyclerView.setHasFixedSize(true)
         }
+    }
+
+    fun updateList(newList: List<Items>) {
+        itemsList = newList
+        notifyDataSetChanged()
     }
 
 }
