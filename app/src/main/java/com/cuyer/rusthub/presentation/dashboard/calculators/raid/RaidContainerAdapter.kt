@@ -1,7 +1,6 @@
 package com.cuyer.rusthub.presentation.dashboard.calculators.raid
 
 import android.app.Activity
-import android.content.ClipData.Item
 import android.content.Context
 import android.graphics.Color
 import android.util.Log
@@ -9,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.LiveData
@@ -17,16 +15,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cuyer.rusthub.R
-import com.cuyer.rusthub.domain.model.Items
-import com.cuyer.rusthub.presentation.dashboard.calculators.scrap.ScrapAmountsAdapter
+import com.google.android.material.textfield.TextInputEditText
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.raid_container_recyclerview.view.*
 
 class RaidContainerAdapter(
-    private var itemsList: List<Items>,
+    private var itemsList: List<RaidModel>,
     context: Context?,
     private var initialPosition: Int,
-    private var filteredItemsInitialList: List<Items>,
+    private var filteredItemsInitialList: List<RaidModel>,
     private var initialSelectorPosition: Int)
     : RecyclerView.Adapter<RaidContainerAdapter.ViewHolder>(),
     RaidSpinnerAdapter.SpinnerItemSelectedListener{
@@ -34,6 +31,8 @@ class RaidContainerAdapter(
     private val mContext = context
     private val selector = mutableListOf("Walls", "Doors")
     private var currentSelectorIndex = initialSelectorPosition
+    private var explosivesCurrentSelectorIndex = 0;
+    private var explosivesCurrentSelectedIndex = 0;
     private val spinnerAdapter = RaidSpinnerAdapter(emptyList(), mContext, this, initialPosition)
 
     private val _selectedPosition = MutableLiveData<Int>()
@@ -44,11 +43,11 @@ class RaidContainerAdapter(
         _selectedPosition.value = position
     }
 
-    private val _filteredInitialList = MutableLiveData<List<Items>>()
-    val filteredInitialList: LiveData<List<Items>>
+    private val _filteredInitialList = MutableLiveData<List<RaidModel>>()
+    val filteredInitialList: LiveData<List<RaidModel>>
         get() = _filteredInitialList
 
-    private fun setInitialFilteredList(list: List<Items>) {
+    private fun setInitialFilteredList(list: List<RaidModel>) {
         _filteredInitialList.value = list
     }
 
@@ -66,6 +65,10 @@ class RaidContainerAdapter(
         val categoryLeftButton: Button
         val categoryRightButton: Button
         val selectedImage: ImageView
+        val amountEditText: TextInputEditText
+        val explosivesLeftButton: Button
+        val explosivesRightButton: Button
+        val explosivesImage: ImageView
 
         init {
             raidSpinner = view.RaidSpinner
@@ -73,6 +76,10 @@ class RaidContainerAdapter(
             selectedImage = view.RaidSelectedImage
             categoryRightButton = view.RaidRight
             categoryLeftButton = view.RaidLeft
+            amountEditText = view.RaidEditText
+            explosivesLeftButton = view.RaidExplosiveLeft
+            explosivesRightButton = view.RaidExplosiveRight
+            explosivesImage = view.RaidExplosiveImage
 
             if (currentSelectorIndex == 0) {
                 categoryLeftButton.isEnabled = false
@@ -95,7 +102,7 @@ class RaidContainerAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             categoryTextView.text = selector[currentSelectorIndex]
-            var filteredItems = emptyList<Items>()
+            var filteredItems = emptyList<RaidModel>()
             val layoutManager = LinearLayoutManager(mContext)
             layoutManager.orientation = LinearLayoutManager.HORIZONTAL
             raidSpinner.layoutManager = layoutManager
@@ -118,7 +125,7 @@ class RaidContainerAdapter(
                 }
             } else {
                 filteredItems = itemsList.filter { item ->
-                    item.scrappedComponents[0].item.contains(
+                    item.type.contains(
                         selector[currentSelectorIndex].dropLast(1),
                         ignoreCase = true
                     )
@@ -146,7 +153,7 @@ class RaidContainerAdapter(
                     currentSelectorIndex--
                     categoryTextView.text = selector[currentSelectorIndex]
                     filteredItems = itemsList.filter { item ->
-                        item.scrappedComponents[0].item.contains(
+                        item.type.contains(
                             selector[currentSelectorIndex].dropLast(1),
                             ignoreCase = true
                         )
@@ -165,6 +172,7 @@ class RaidContainerAdapter(
                         categoryLeftButton.setBackgroundColor(Color.parseColor("#2B2B2B"))
                     }
                 }
+                notifyDataSetChanged()
                 spinnerAdapter.updateList(filteredItems)
             }
 
@@ -173,7 +181,7 @@ class RaidContainerAdapter(
                     currentSelectorIndex++
                     categoryTextView.text = selector[currentSelectorIndex]
                     filteredItems = itemsList.filter { item ->
-                        item.scrappedComponents[0].item.contains(
+                        item.type.contains(
                             selector[currentSelectorIndex].dropLast(1),
                             ignoreCase = true
                         )
@@ -192,7 +200,75 @@ class RaidContainerAdapter(
                         categoryRightButton.setBackgroundColor(Color.parseColor("#2B2B2B"))
                     }
                 }
+                notifyDataSetChanged()
                 spinnerAdapter.updateList(filteredItems)
+            }
+
+            // explosives
+            if (explosivesCurrentSelectedIndex == 0) {
+                filteredItems = itemsList.filter { item ->
+                    item.type.contains(
+                        selector[currentSelectorIndex].dropLast(1),
+                        ignoreCase = true
+                    )
+                }
+                setInitialFilteredList(filteredItems)
+                Picasso.get()
+                    .load(filteredItems[0].explosives[0].image)
+                    .placeholder(R.drawable.ic_placeholder_image)
+                    .error(R.drawable.ic_missing_icon)
+                    .into(explosivesImage)
+            } else {
+                filteredItems = itemsList.filter { item ->
+                    item.type.contains(
+                        selector[currentSelectorIndex].dropLast(1),
+                        ignoreCase = true
+                    )
+                }
+                setInitialFilteredList(filteredItems)
+                Picasso.get()
+                    .load(filteredItems[explosivesCurrentSelectedIndex].explosives[0].image)
+                    .placeholder(R.drawable.ic_placeholder_image)
+                    .error(R.drawable.ic_missing_icon)
+                    .into(explosivesImage)
+            }
+            explosivesRightButton.setOnClickListener {
+                if (explosivesCurrentSelectorIndex < filteredItems[explosivesCurrentSelectedIndex].explosives.size - 1) {
+                    explosivesCurrentSelectorIndex++
+
+                    Picasso.get()
+                        .load(filteredItems[explosivesCurrentSelectedIndex].explosives[explosivesCurrentSelectorIndex].image)
+                        .placeholder(R.drawable.ic_placeholder_image)
+                        .error(R.drawable.ic_missing_icon)
+                        .into(explosivesImage)
+                    explosivesLeftButton.isEnabled = true
+                    explosivesLeftButton.setBackgroundColor(Color.parseColor("#F6EAE0"))
+
+                    if (explosivesCurrentSelectorIndex == filteredItems[explosivesCurrentSelectedIndex].explosives.size -1) {
+                        explosivesRightButton.isEnabled = false
+                        explosivesRightButton.setBackgroundColor(Color.parseColor("#2B2B2B"))
+                    }
+                }
+            }
+
+            explosivesLeftButton.setOnClickListener {
+                if (explosivesCurrentSelectorIndex > 0) {
+                    explosivesCurrentSelectorIndex--
+
+                    Picasso.get()
+                        .load(filteredItems[explosivesCurrentSelectedIndex].explosives[explosivesCurrentSelectorIndex].image)
+                        .placeholder(R.drawable.ic_placeholder_image)
+                        .error(R.drawable.ic_missing_icon)
+                        .into(explosivesImage)
+
+                    explosivesRightButton.isEnabled = true
+                    explosivesRightButton.setBackgroundColor(Color.parseColor("#F6EAE0"))
+
+                    if (explosivesCurrentSelectorIndex == 0) {
+                        explosivesLeftButton.isEnabled = false
+                        explosivesLeftButton.setBackgroundColor(Color.parseColor("#2B2B2B"))
+                    }
+                }
             }
         }
     }
@@ -200,6 +276,7 @@ class RaidContainerAdapter(
     override fun onImageClick(imageUrl: String, position: Int) {
         val selectedImage: ImageView = (mContext as Activity).findViewById(R.id.RaidSelectedImage)
         setSelectedPosition(position)
+        explosivesCurrentSelectedIndex = position
         Picasso.get()
             .load(imageUrl)
             .placeholder(R.drawable.ic_placeholder_image)

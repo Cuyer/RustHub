@@ -15,6 +15,7 @@ import com.cuyer.rusthub.domain.use_case.get_items.GetItemsUseCase
 import com.cuyer.rusthub.domain.use_case.get_servers.GetServersAfterRefresh
 import com.cuyer.rusthub.domain.use_case.get_servers.GetServersFromDbUseCase
 import com.cuyer.rusthub.domain.use_case.get_servers.GetServersUseCase
+import com.cuyer.rusthub.presentation.dashboard.calculators.raid.RaidModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -50,8 +51,8 @@ class CoreViewModel @Inject constructor(
     }
     fun getRaidSelectedItemPosition() = raidSelectedItemPosition
 
-    private var raidInitialFilteredList = emptyList<Items>()
-    fun setRaidInitialFilteredList(list: List<Items>) {
+    private var raidInitialFilteredList = emptyList<RaidModel>()
+    fun setRaidInitialFilteredList(list: List<RaidModel>) {
         raidInitialFilteredList = list
     }
 
@@ -268,4 +269,4 @@ class CoreViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
-    }
+}

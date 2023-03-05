@@ -22,6 +22,7 @@ class RaidFragment : Fragment() {
     private lateinit var raidAdapter: RaidContainerAdapter
     private var onBackPressedCalled = false
     private val viewModel by activityViewModels<CoreViewModel>()
+    private val raidList = RaidModel().create()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,11 +38,9 @@ class RaidFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_raid, container, false)
         recyclerView = rootView.RaidViewContainer
 
-        viewModel.getItemsList.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
-                raidAdapter = RaidContainerAdapter(it, context, viewModel.getRaidSelectedItemPosition(),
+                raidAdapter = RaidContainerAdapter(raidList, context, viewModel.getRaidSelectedItemPosition(),
                     viewModel.getRaidInitialFilteredList(),
-                    viewModel.getSelectorPosition())
+                    viewModel.getSelectorPosition(),)
                 val layoutManager = LinearLayoutManager(context)
                 layoutManager.orientation = LinearLayoutManager.VERTICAL
                 recyclerView.layoutManager = layoutManager
@@ -58,8 +57,6 @@ class RaidFragment : Fragment() {
                 raidAdapter.selectorPosition.observe(viewLifecycleOwner) {selectorPosition ->
                     viewModel.setSelectorPosition(selectorPosition)
                 }
-            }
-        }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             viewModel.setCurrentFragmentName("Calculators")

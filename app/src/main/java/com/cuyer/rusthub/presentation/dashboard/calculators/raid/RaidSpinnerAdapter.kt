@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.raid_spinner_item.view.*
 import okhttp3.internal.notify
 
 class RaidSpinnerAdapter(
-    private var itemsList: List<Items>,
+    private var itemsList: List<RaidModel>,
     context: Context?,
     private val listener: SpinnerItemSelectedListener?,
     private val scrollPosition: Int
@@ -75,7 +75,7 @@ class RaidSpinnerAdapter(
         }
     }
 
-    fun updateList(newList: List<Items>) {
+    fun updateList(newList: List<RaidModel>) {
         itemsList = newList
         notifyDataSetChanged()
     }
