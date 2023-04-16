@@ -18,7 +18,7 @@ Tech Stack:
 * Coroutines
 * Event bus
 
-Additionally app was written using MVVM with Clean Architecture principle. I've created my own local MongoDB database and integraded with my own API that was written in Node.js
+Additionally app was written using MVVM with Clean Architecture principle. I've created my own local MongoDB database and integraded with my own API that was written in Node.js. Application was built to support screen orientation changes and if needed, light/dark theme switch could be applied easily.
 
 ## Dashboard
 
